@@ -126,7 +126,7 @@ config.macros.extensionsExlorer = {
 			[ ... ]
 			//}}}
 			*/
-			const match = /(\/\/{{{)?\s+((?:.|\n)+)\s+(\/\/}}})$/
+			const match = /(\/\/{{{)\s+((?:.|\n)+)\s+(\/\/}}})$/
 				.exec(listText);
 			if(match) try {
 				availableExtensions = JSON.parse(match[2]);
