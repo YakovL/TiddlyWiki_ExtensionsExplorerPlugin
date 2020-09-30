@@ -2,7 +2,7 @@
 |Description|checks and reports updates of installed extensions on startup, introduces a macro/backstage button to explore, install and update extensions|
 |Version|0.3.7|
 |Author|Yakov Litvin|
-|Source|http://yakovl.bplaced.net/TW/pre-releases/ExtensionsExplorerPlugin.txt|
+|Source|https://raw.githubusercontent.com/YakovL/TiddlyWiki_ExtensionsExplorerPlugin/master/ExtensionsExplorerPlugin.js|
 |Requires|ForEachTiddlerPlugin|
 |~|currently this uses {{{.getSlice}}} of {{{Tiddler}}} implemented in [[ForEachTiddlerPlugin|http://yakovl.bplaced.net/TW/pre-releases/ForEachTiddler%20+%20SetManagerPlugin.html#ForEachTiddlerPlugin]] v1.3.3 or above|
 |License|MIT|
