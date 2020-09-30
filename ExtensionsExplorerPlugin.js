@@ -473,7 +473,7 @@ config.macros.extensionsExlorer = {
 
 config.shadowTiddlers[centralSourcesListName] = '//{{{\n' +
 	JSON.stringify(config.macros.extensionsExlorer.availableExtensions, null, 2) +
-	'\n//{{{';
+	'\n//}}}';
 config.annotations[centralSourcesListName] =
 	config.macros.extensionsExlorer.lingo.centralSourcesListAnnotation;
 //}}}
