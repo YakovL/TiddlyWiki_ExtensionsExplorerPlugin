@@ -3,11 +3,24 @@
 |Version|0.3.7|
 |Author|Yakov Litvin|
 |Source|https://raw.githubusercontent.com/YakovL/TiddlyWiki_ExtensionsExplorerPlugin/master/ExtensionsExplorerPlugin.js|
-|Requires|ForEachTiddlerPlugin|
-|~|currently this uses {{{.getSlice}}} of {{{Tiddler}}} implemented in [[ForEachTiddlerPlugin|http://yakovl.bplaced.net/TW/pre-releases/ForEachTiddler%20+%20SetManagerPlugin.html#ForEachTiddlerPlugin]] v1.3.3 or above|
 |License|MIT|
 ***/
 //{{{
+// Returns the slice value if it is present or defaultText otherwise
+//
+Tiddler.prototype.getSlice = Tiddler.prototype.getSlice || function(sliceName, defaultText) {
+	var re = TiddlyWiki.prototype.slicesRE, m;
+	re.lastIndex = 0;
+	while(m = re.exec(this.text)) {
+		if(m[2]) {
+			if(m[2] == sliceName) return m[3];
+		} else {
+			if(m[5] == sliceName) return m[6];
+		}
+	}
+	return defaultText;
+};
+
 var centralSourcesListName = "AvailableExtensions";
 
 config.macros.extensionsExlorer = {
@@ -44,7 +57,6 @@ config.macros.extensionsExlorer = {
 		)
 			return 'plugin';
 	},
-	//# getSlice isn't a part of the core!
 	getSourceUrl: function(tiddler) {
 		return tiddler.fields.sourceUrl || tiddler.getSlice('Source');
 		//# try also the field set by import (figure the name by experiment)
