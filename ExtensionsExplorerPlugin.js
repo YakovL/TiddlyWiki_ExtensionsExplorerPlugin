@@ -175,17 +175,18 @@ config.macros.extensionsExlorer = {
 		return url;
 	},
 	/*
-	@param type: 'tw' | string (default = 'txt') - of the tiddler
-	 source (a TW or a text file)
+	@param sourceType: 'tw' | string | fasly (default = 'txt') -
+	 of the tiddler source (a TW or a text file)
 	@param url: string - either url of the text file or url#TiddlerName
 	 for a TW (TiddlerName defines the title of the tiddler to load)
 	@param title: string - is assigned to the loaded tiddler
 	@param callback: tiddler | null => void
 	 support second param of callback? (error/xhr)
 	*/
-	loadExternalTiddler: function(type, url, title, callback) {
-		//# perhaps we can load and guess the type instead
-		if(type == 'tw') {
+	loadExternalTiddler: function(sourceType, url, title, callback) {
+		sourceType = sourceType || this.guessSourceType(url);
+		//# if sourceType is uknown, we can load file and guess afterwards
+		if(sourceType == 'tw') {
 			const tiddlerName = url.split('#')[1] || title;
 			url = url.split('#')[0];
 			httpReq('GET', url, function(success, params, responseText, url, xhr) {
@@ -458,9 +459,8 @@ config.macros.extensionsExlorer = {
 	*/
 	checkForUpdate: function(url, extensionTiddler, callback) {
 		if(!url) return;
-		const sourceType = this.guessSourceType(url);
 		const title = extensionTiddler.title;
-		this.loadExternalTiddler(sourceType, url, title, loadedTiddler => {
+		this.loadExternalTiddler(null, url, title, loadedTiddler => {
 			if(!loadedTiddler)
 				return callback({
 					tiddler: null,
