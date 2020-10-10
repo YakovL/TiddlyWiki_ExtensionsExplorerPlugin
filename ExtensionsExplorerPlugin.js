@@ -237,7 +237,7 @@ config.macros.extensionsExlorer = {
 	init: function() {
 		//# set delegated handlers of install, update buttons
 		const extensionTiddlers = this.getInstalledExtensions();
-		if(config.options.chkSkipExtensionsUpdatesCheckOnStartup)
+		if(!config.options.chkSkipExtensionsUpdatesCheckOnStartup)
 			for(const eTiddler of extensionTiddlers) {
 				const url = this.getSourceUrl(eTiddler);
 				if(!url) continue;
