@@ -57,13 +57,16 @@ config.macros.extensionsExlorer = {
 		)
 			return 'plugin';
 	},
+	//# should we use 'server.host' field instead? see core (import, loadMissingTiddler etc) for the exact semantics
+	sourceUrlField: 'sourceUrl',
 	getSourceUrl: function(tiddler) {
-		return tiddler.fields.sourceUrl || tiddler.getSlice('Source');
+		return tiddler.fields[this.sourceUrlField] ||
+			tiddler.getSlice('Source');
 		//# try also the field set by import (figure the name by experiment)
 	},
 	setSourceUrl: function(tiddler, url) {
 		//# simple implementation, not sure if setValue should be used instead
-		tiddler.fields.sourceUrl = url;
+		tiddler.fields[this.sourceUrlField] = url;
 	},
 	getDescription: tiddler => tiddler.getSlice('Description', ''),
 	getVersionString: tiddler => tiddler.getSlice('Version', ''),
@@ -379,53 +382,52 @@ config.macros.extensionsExlorer = {
 	},
 	grabAndInstall: function(extension) {
 		if(!extension) return;
-		if(!extension.text)
-			this.loadExternalTiddler(
-				extension.sourceType,
-				extension.url,
-				extension.name, tiddler => {
-					if(!tiddler) {
-						displayMessage(this.lingo.getFailedToLoadMsg(extension.name));
-						return;
-					}
-					displayMessage(this.lingo.getSucceededToLoadMsg(tiddler.title));
-					extension.text = tiddler.text;
-					//# should we keep tiddler? custom fields etc
-					extension.type = extension.type || this.guessExtensionType(tiddler);
-					this.install(extension);
+		if(extension.text) {
+			let extensionTiddler = new Tiddler(extension.name);
+			extensionTiddler.text = extension.text;
+			extensionTiddler.generatedByTextOnly = true;
+			//# share 3 ↑ lines as ~internalize helper (with loadExternalTiddler)
+			this.install(extensionTiddler, extension.type);
+			return;
+		}
+		this.loadExternalTiddler(
+			extension.sourceType,
+			extension.url,
+			extension.name, tiddler => {
+				if(!tiddler) {
+					displayMessage(this.lingo.getFailedToLoadMsg(extension.name));
+					return;
 				}
-			);
-		else
-			this.install(extension);
+				displayMessage(this.lingo.getSucceededToLoadMsg(tiddler.title));
+				this.install(tiddler, extension.type ||
+					this.guessExtensionType(tiddler));
+			}
+		);
 	},
 	// evaluate if a plugin, import
 	//# simple unsafe version, no dependency handling, registering as installed,
 	//  _install-only-once check_, result reporting, refreshing/notifying, ..
-	install: function(extension) {
-		if(!extension.text) return;
+	install: function(extensionTiddler, extensionType) {
+		if(!extensionTiddler) return;
 
-		// prepare for import
-		let tiddler = new Tiddler(extension.name);
-		//# if source is TW, import whole tiddler instead
-		tiddler.text = extension.text;
-
-		if(extension.type == 'plugin') {
+		if(extensionType == 'plugin') {
 			// enable at once
 			try {
-				eval(extension.text);
+				eval(extensionTiddler.text);
 				//# displayMessage ..installed
 			} catch(e) {
 				//# displayMessage ..failed to install
 				//  don't import?
 			}
 			// plugin-specific import preparation
-			tiddler.tags.pushUnique('systemConfig');
+			extensionTiddler.tags.pushUnique('systemConfig');
 		} else {
 			//# add _ tag for themes? 
 		}
 		
 		// actually import etc
-		this.updateExtension(tiddler); //# what if exists already?
+		this.updateExtension(extensionTiddler);
+		//# what if exists already? (by the same name; other name)
 	},
 	updateExtension: function(extensionTiddler) {
 		// import
@@ -472,7 +474,7 @@ config.macros.extensionsExlorer = {
 				//# also get and compare modified dates?
 			{
 				//# what about undefined?
-				console.log('loaded is not newer'); //# return callback(...)
+				console.log('loaded is not newer');
 				callback({
 					tiddler: loadedTiddler,
 					noUpdateMessage: "current version is up-to-date"
