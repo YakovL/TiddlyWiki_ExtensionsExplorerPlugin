@@ -177,6 +177,7 @@ config.macros.extensionsExlorer = {
 			'/' + match[3]; // path
 		return url;
 	},
+	twsCache: {}, // map of strings
 	/*
 	@param sourceType: 'tw' | string | fasly (default = 'txt') -
 	 of the tiddler source (a TW or a text file)
@@ -186,15 +187,17 @@ config.macros.extensionsExlorer = {
 	@param callback: tiddler | null => void
 	 support second param of callback? (error/xhr)
 	*/
-	loadExternalTiddler: function(sourceType, url, title, callback) {
+	loadExternalTiddler: function(sourceType, url, title, callback, useCache) {
 		sourceType = sourceType || this.guessSourceType(url);
 		//# if sourceType is uknown, we can load file and guess afterwards
 		if(sourceType == 'tw') {
 			const tiddlerName = url.split('#')[1] || title;
-			url = url.split('#')[0];
-			httpReq('GET', url, function(success, params, responseText, url, xhr) {
+			const requestUrl = url.split('#')[0];
+			const cache = this.twsCache;
+			const onTwLoad = function(success, params, responseText, url, xhr) {
 				if(!success)
 					return callback(null); //# pass more info? outside: warn?
+				if(!useCache) cache[requestUrl] = responseText;
 				const externalTW = new TiddlyWiki();
 				let result = externalTW.importTiddlyWiki(responseText);
 				if(!result)
@@ -215,7 +218,11 @@ config.macros.extensionsExlorer = {
 				//# import, see ...
 				//# tiddler.title = title;
 				//# callback(tiddler);
-			});
+			};
+			if(useCache && cache[requestUrl])
+				onTwLoad(true, null, cache[requestUrl]);
+			else
+				httpReq('GET', requestUrl, onTwLoad);
 		} else {
 			url = this.getUrlOfRawIfGithub(url);
 			httpReq('GET', url, function(success, params, responseText, url, xhr) {
