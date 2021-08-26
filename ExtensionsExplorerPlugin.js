@@ -78,7 +78,7 @@ config.macros.extensionsExlorer = {
 			major: parts[1],
 			minor: parts[2],
 			revision: parts[3] || '0'
-		} : null;
+		} : {};
 	},
 
 	// helpers to get stuff from external repos
@@ -475,8 +475,8 @@ config.macros.extensionsExlorer = {
 					tiddler: null,
 					error: "" //# specify
 				});
-			if(compareVersions(this.getVersion(loadedTiddler) || {},
-					   this.getVersion(extensionTiddler) || {}
+			if(compareVersions(this.getVersion(loadedTiddler),
+					   this.getVersion(extensionTiddler)
 					  ) >= 0)
 				//# also get and compare modified dates?
 			{
