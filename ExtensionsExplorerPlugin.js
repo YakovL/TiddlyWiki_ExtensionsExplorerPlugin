@@ -355,10 +355,15 @@ config.macros.extensionsExlorer = {
 					//# use result.error
 					return;
 				}
-				displayMessage(this.lingo.getUpdateAvailableMsg(extensionTiddler.title), updateUrl);
-
 				const versionOfLoaded = this.getVersion(result.tiddler);
 				const versionOfPresent = this.getVersion(extensionTiddler);
+				if(compareVersions(versionOfLoaded, versionOfPresent) >= 0) {
+					displayMessage(this.lingo.updateNotAvailable);
+					//# use result.error
+					return;
+				}
+				displayMessage(this.lingo.getUpdateAvailableMsg(extensionTiddler.title), updateUrl);
+
 				//# later: better than confirm? option for silent?
 				if(confirm(this.lingo.getUpdateConfirmMsg(
 					extensionTiddler.title,
