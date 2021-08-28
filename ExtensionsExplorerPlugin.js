@@ -34,6 +34,12 @@ config.macros.extensionsExlorer = {
 		updateButtonCheckLabel: "check",
 		updateButtonCheckPrompt: "check for updates",
 		getUpdateAvailableMsg: name => "update of "+ name +" is available!",
+		getUpdateAvailableAndVersionsMsg: (existingTiddler, newTiddler) => {
+			const getVersionString = config.macros.extensionsExlorer.getVersionString
+			return "#test# update of "+ existingTiddler.title +" is available "+
+				"(current version: "+ getVersionString(existingTiddler) +
+				", available version: "+ getVersionString(newTiddler);
+		},
 		updateNotAvailable: "update is not available",
 		getUpdateConfirmMsg: function(title, loadedVersion, presentVersion) {
 			const loadedVersionString = loadedVersion ? formatVersion(loadedVersion) : '';
@@ -251,15 +257,11 @@ config.macros.extensionsExlorer = {
 			for(const eTiddler of extensionTiddlers) {
 				const url = this.getSourceUrl(eTiddler);
 				if(!url) continue;
-				const getAvailableUpdateMessage = newTiddler =>
-				    'update of '+ eTiddler.title +' is available '+
-				    '(current version: '+ this.getVersionString(eTiddler) +
-				    ', available version: '+ this.getVersionString(newTiddler);
 				this.checkForUpdate(url, eTiddler, result => {
 		console.log('checkForUpdate for ' + url +
 			',', eTiddler, 'result is:', result)
 					if(result.tiddler && !result.noUpdateMessage)
-						displayMessage(getAvailableUpdateMessage(result.tiddler));
+						displayMessage(this.lingo.getUpdateAvailableAndVersionsMsg(eTiddler, result.tiddler));
 					//# either report each one at once,
 					//   (see onUpdateCheckResponse)
 					//  create summary and report,
