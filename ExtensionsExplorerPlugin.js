@@ -1,6 +1,6 @@
 /***
 |Description|checks and reports updates of installed extensions on startup, introduces a macro/backstage button to explore, install and update extensions|
-|Version|0.3.8|
+|Version|0.3.9|
 |Author|Yakov Litvin|
 |Source|https://raw.githubusercontent.com/YakovL/TiddlyWiki_ExtensionsExplorerPlugin/master/ExtensionsExplorerPlugin.js|
 |License|MIT|
@@ -23,19 +23,20 @@ Tiddler.prototype.getSlice = Tiddler.prototype.getSlice || function(sliceName, d
 
 var centralSourcesListName = "AvailableExtensions";
 
-config.macros.extensionsExlorer = {
+config.macros.extensionsExlorer = // name with typo, for backward compatibility, will be removed later
+config.macros.extensionsExplorer = {
 	lingo: {
 		installButtonLabel: "install",
 		installButtonPrompt: "get and install this extension",
 		getFailedToLoadMsg: name => "failed to load " + name,
 		getSucceededToLoadMsg: name => "loaded " + name + ", about to install and import...",
 		noSourceUrlAvailable: "no source url",
-		
+
 		updateButtonCheckLabel: "check",
 		updateButtonCheckPrompt: "check for updates",
 		getUpdateAvailableMsg: name => "update of "+ name +" is available!",
 		getUpdateAvailableAndVersionsMsg: (existingTiddler, newTiddler) => {
-			const getVersionString = config.macros.extensionsExlorer.getVersionString
+			const getVersionString = config.macros.extensionsExplorer.getVersionString
 			return "#test# update of "+ existingTiddler.title +" is available "+
 				"(current version: "+ getVersionString(existingTiddler) +
 				", available version: "+ getVersionString(newTiddler);
@@ -277,7 +278,7 @@ config.macros.extensionsExlorer = {
 		config.tasks[taskName] = {
 			text: "explore extensions",
 			tooltip: "see if there's any updates or install new ones",
-			content: '<<extensionsExlorer>>',
+			content: '<<extensionsExplorer>>',
 		};
 	},
 	handler: function(place, macroName, params, wikifier, paramString) {
@@ -287,7 +288,7 @@ config.macros.extensionsExlorer = {
 		const table = place.lastChild;
 
 		jQuery(table).attr({ refresh: 'macro', macroName: macroName })
-			.addClass('extensionsExlorer').append('<tbody>');
+			.addClass('extensionsExplorer').append('<tbody>');
 		
 		this.refresh(table);
 	},
@@ -500,8 +501,8 @@ config.macros.extensionsExlorer = {
 };
 
 config.shadowTiddlers[centralSourcesListName] = '//{{{\n' +
-	JSON.stringify(config.macros.extensionsExlorer.availableExtensions, null, 2) +
+	JSON.stringify(config.macros.extensionsExplorer.availableExtensions, null, 2) +
 	'\n//}}}';
 config.annotations[centralSourcesListName] =
-	config.macros.extensionsExlorer.lingo.centralSourcesListAnnotation;
+	config.macros.extensionsExplorer.lingo.centralSourcesListAnnotation;
 //}}}
