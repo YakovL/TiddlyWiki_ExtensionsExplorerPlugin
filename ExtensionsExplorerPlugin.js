@@ -29,7 +29,7 @@ config.macros.extensionsExplorer = {
 		installButtonLabel: "install",
 		installButtonPrompt: "get and install this extension",
 		getFailedToLoadMsg: name => "failed to load " + name,
-		getSucceededToLoadMsg: name => "loaded " + name + ", about to install and import...",
+		getSucceededToLoadMsg: name => "loaded " + name + ", about to import and install...",
 		noSourceUrlAvailable: "no source url",
 
 		updateButtonCheckLabel: "check",
