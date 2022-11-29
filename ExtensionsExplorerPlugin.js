@@ -1,6 +1,6 @@
 /***
 |Description|checks and reports updates of installed extensions on startup, introduces a macro/backstage button to explore, install and update extensions|
-|Version|0.3.9|
+|Version|0.3.10|
 |Author|Yakov Litvin|
 |Source|https://raw.githubusercontent.com/YakovL/TiddlyWiki_ExtensionsExplorerPlugin/master/ExtensionsExplorerPlugin.js|
 |License|MIT|
@@ -119,6 +119,9 @@ config.macros.extensionsExplorer = {
 			url: 'https://yakovl.github.io/VisualTW2/VisualTW2.html#FieldsEditorPlugin',
 			description: '',
 			type: 'plugin'
+		},
+		{
+			url: 'https://github.com/YakovL/TiddlyWiki_DarkModePlugin/blob/master/DarkModePlugin.js'
 		},
 		{
 			url: 'https://github.com/tobibeer/TiddlyWikiPlugins/blob/master/plugins/ListFiltrPlugin.js'
