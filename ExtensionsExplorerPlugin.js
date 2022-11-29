@@ -449,7 +449,8 @@ config.macros.extensionsExplorer = {
 		var existingTiddler = store.fetchTiddler(extensionTiddler.title);
 		if(extensionTiddler.generatedByTextOnly && existingTiddler) {
 			existingTiddler.text = extensionTiddler.text;
-			//# update also modified? modifier? changecount?
+			existingTiddler.modified = new Date();
+			//# update also modifier? changecount?
 		} else {
 			store.addTiddler(extensionTiddler);
 		}
