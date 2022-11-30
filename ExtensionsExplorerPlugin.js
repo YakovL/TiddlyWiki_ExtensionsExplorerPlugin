@@ -1,6 +1,6 @@
 /***
 |Description|checks and reports updates of installed extensions on startup, introduces a macro/backstage button to explore, install and update extensions|
-|Version|0.4.0|
+|Version|0.4.1|
 |Author|Yakov Litvin|
 |Source|https://raw.githubusercontent.com/YakovL/TiddlyWiki_ExtensionsExplorerPlugin/master/ExtensionsExplorerPlugin.js|
 |License|[[MIT|https://github.com/YakovL/TiddlyWiki_ExtensionsExplorerPlugin/blob/master/LICENSE]]|
@@ -23,7 +23,6 @@ Tiddler.prototype.getSlice = Tiddler.prototype.getSlice || function(sliceName, d
 
 var centralSourcesListName = "AvailableExtensions";
 
-config.macros.extensionsExlorer = // name with typo, for backward compatibility, will be removed later
 config.macros.extensionsExplorer = {
 	lingo: {
 		installButtonLabel: "install",
