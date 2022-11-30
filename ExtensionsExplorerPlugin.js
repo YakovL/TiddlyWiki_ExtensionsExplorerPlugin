@@ -1,6 +1,6 @@
 /***
 |Description|checks and reports updates of installed extensions on startup, introduces a macro/backstage button to explore, install and update extensions|
-|Version|0.3.10|
+|Version|0.4.0|
 |Author|Yakov Litvin|
 |Source|https://raw.githubusercontent.com/YakovL/TiddlyWiki_ExtensionsExplorerPlugin/master/ExtensionsExplorerPlugin.js|
 |License|MIT|
@@ -82,9 +82,9 @@ config.macros.extensionsExplorer = {
 		//# should use a helper from core instead
 		const parts = /(\d+)\.(\d+)(?:\.(\d+))?/.exec(versionString);
 		return parts ? {
-			major: parts[1],
-			minor: parts[2],
-			revision: parts[3] || '0'
+			major: parseInt(parts[1]),
+			minor: parseInt(parts[2]),
+			revision: parseInt(parts[3] || '0')
 		} : {};
 	},
 
