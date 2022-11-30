@@ -3,7 +3,7 @@
 |Version|0.4.0|
 |Author|Yakov Litvin|
 |Source|https://raw.githubusercontent.com/YakovL/TiddlyWiki_ExtensionsExplorerPlugin/master/ExtensionsExplorerPlugin.js|
-|License|MIT|
+|License|[[MIT|https://github.com/YakovL/TiddlyWiki_ExtensionsExplorerPlugin/blob/master/LICENSE]]|
 ***/
 //{{{
 // Returns the slice value if it is present or defaultText otherwise
