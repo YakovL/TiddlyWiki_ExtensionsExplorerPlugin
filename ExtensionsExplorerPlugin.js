@@ -36,7 +36,7 @@ config.macros.extensionsExplorer = {
 		getUpdateAvailableMsg: name => "update of "+ name +" is available!",
 		getUpdateAvailableAndVersionsMsg: (existingTiddler, newTiddler) => {
 			const getVersionString = config.macros.extensionsExplorer.getVersionString
-			return "#test# update of "+ existingTiddler.title +" is available "+
+			return "update of "+ existingTiddler.title +" is available "+
 				"(current version: "+ getVersionString(existingTiddler) +
 				", available version: "+ getVersionString(newTiddler);
 		},
