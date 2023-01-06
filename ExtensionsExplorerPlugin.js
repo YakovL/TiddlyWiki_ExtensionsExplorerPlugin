@@ -322,9 +322,20 @@ config.macros.extensionsExplorer = {
 
 		//# when implemented: load list of available extensions (now hardcoded)
 
+		const installedExtensionsTiddlers = this.getInstalledExtensions()
+			.sort((e1, e2) => {
+				if(!this.getSourceUrl(e1)) return +1;
+				if(!this.getSourceUrl(e2)) return -1;
+				return 0;
+			});
+
 		// show extensions available to install # will it omit if installed?
 		const availableExtensions = this.getAvailableExtensions();
 		for(const extension of availableExtensions) {
+			// skip installed
+			if(installedExtensionsTiddlers.some(tid => tid.title === extension.name
+				&& this.getSourceUrl(tid) === extension.url)) continue;
+
 			if(!extension.name && extension.sourceType == 'tw')
 				extension.name = extension.url.split('#')[1];
 			appendRow({
@@ -344,13 +355,7 @@ config.macros.extensionsExplorer = {
 
 		// show installed ones.. # or only those having updates?
 		$tbody.append(jQuery(`<tr><td colspan="4" style="text-align: center;">Installed</td></tr>`));
-		const installedExtensions = this.getInstalledExtensions()
-			.sort((e1, e2) => {
-				if(!this.getSourceUrl(e1)) return +1;
-				if(!this.getSourceUrl(e2)) return -1;
-				return 0;
-			});
-		for(let extensionTiddler of installedExtensions) {
+		for(let extensionTiddler of installedExtensionsTiddlers) {
 			//# limit the width of the Description column/whole table
 			let updateUrl = this.getSourceUrl(extensionTiddler);
 				//# check also list of extensions to install
