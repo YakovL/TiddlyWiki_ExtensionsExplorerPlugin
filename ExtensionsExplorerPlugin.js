@@ -2,7 +2,7 @@
 |Description|checks and reports updates of installed extensions on startup, introduces a macro/backstage button to explore, install and update extensions|
 |Version|0.4.1|
 |Author|Yakov Litvin|
-|Source|https://raw.githubusercontent.com/YakovL/TiddlyWiki_ExtensionsExplorerPlugin/master/ExtensionsExplorerPlugin.js|
+|Source|https://github.com/YakovL/TiddlyWiki_ExtensionsExplorerPlugin/blob/master/ExtensionsExplorerPlugin.js|
 |License|[[MIT|https://github.com/YakovL/TiddlyWiki_ExtensionsExplorerPlugin/blob/master/LICENSE]]|
 ***/
 //{{{
@@ -101,7 +101,7 @@ config.macros.extensionsExplorer = {
 			// js file @ github - worked /# simplify url to be inserted?
 			name: 'ShowUnsavedPlugin',
 			sourceType: 'txt',
-			url: 'https://raw.githubusercontent.com/YakovL/TiddlyWiki_ShowUnsavedPlugin/master/ShowUnsavedPlugin.js',
+			url: 'https://github.com/YakovL/TiddlyWiki_ShowUnsavedPlugin/blob/master/ShowUnsavedPlugin.js',
 			description: 'highlights saving button (bold red by default) and the document title (adds a leading "*") when there are unsaved changes',
 			type: 'plugin',
 			text: ''
