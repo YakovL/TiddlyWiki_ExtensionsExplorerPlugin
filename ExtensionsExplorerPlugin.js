@@ -107,20 +107,21 @@ config.macros.extensionsExplorer = {
 			text: ''
 		},
 		{
-			// txt file @ remote without CORS – worked with _
-			url: 'http://yakovl.bplaced.net/TW/Spreadsheets.html#HandsontablePlugin',
-			description: 'a test plugin on a site without CORS'
+			url: 'https://github.com/YakovL/TiddlyWiki_DarkModePlugin/blob/master/DarkModePlugin.js',
+			description: 'This plugin introduces "dark mode" (changes styles) and switching it by the {{{darkMode}}} macro and operating system settings'
 		},
 		{
 			// in TW @ remote (CORS-enabled) – worked
 			name: 'FieldsEditorPlugin',
 			sourceType: 'tw',
 			url: 'https://yakovl.github.io/VisualTW2/VisualTW2.html#FieldsEditorPlugin',
-			description: '',
+			description: 'adds controls (create/edit/rename/delete) to the "fields" toolbar dropdown',
 			type: 'plugin'
 		},
 		{
-			url: 'https://github.com/YakovL/TiddlyWiki_DarkModePlugin/blob/master/DarkModePlugin.js'
+			// txt file @ remote without CORS – worked with _
+			url: 'http://yakovl.bplaced.net/TW/Spreadsheets.html#HandsontablePlugin',
+			description: 'a test plugin on a site without CORS'
 		},
 		{
 			url: 'https://github.com/tobibeer/TiddlyWikiPlugins/blob/master/plugins/ListFiltrPlugin.js'
