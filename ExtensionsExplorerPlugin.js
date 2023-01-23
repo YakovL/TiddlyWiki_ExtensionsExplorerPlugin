@@ -16,7 +16,7 @@ It also adds "explore extensions" in the backstage (and the {{{<<extensionsExplo
 // Returns the slice value if it is present or defaultText otherwise
 //
 Tiddler.prototype.getSlice = Tiddler.prototype.getSlice || function(sliceName, defaultText) {
-	var re = TiddlyWiki.prototype.slicesRE, m;
+	let re = TiddlyWiki.prototype.slicesRE, m;
 	re.lastIndex = 0;
 	while(m = re.exec(this.text)) {
 		if(m[2]) {
@@ -28,7 +28,7 @@ Tiddler.prototype.getSlice = Tiddler.prototype.getSlice || function(sliceName, d
 	return defaultText;
 };
 
-var centralSourcesListName = "AvailableExtensions";
+const centralSourcesListName = "AvailableExtensions";
 
 config.macros.extensionsExplorer = {
 	lingo: {
@@ -48,7 +48,7 @@ config.macros.extensionsExplorer = {
 				", available version: "+ getVersionString(newTiddler);
 		},
 		updateNotAvailable: "update is not available",
-		getUpdateConfirmMsg: function(title, loadedVersion, presentVersion) {
+		getUpdateConfirmMsg: (title, loadedVersion, presentVersion) => {
 			const loadedVersionString = loadedVersion ? formatVersion(loadedVersion) : '';
 			const presentVersionString = presentVersion ? formatVersion(presentVersion) : '';
 			return "Would you like to update "+ title +
@@ -137,14 +137,13 @@ config.macros.extensionsExplorer = {
 	guessNameByUrl: function(extension) {
 		if(!extension.url) return undefined;
 		const urlParts = extension.url.split('#');
+
 		// site.domain/path/tw.html#TiddlerName
-		if(urlParts.length > 1 && /\.html$/.exec(urlParts[0]))
-			return urlParts[1];
+		if(urlParts.length > 1 && /\.html$/.exec(urlParts[0])) return urlParts[1];
+
 		// <url part>/TiddlerName.txt or <url part>/TiddlerName.js
 		const textPathMatch = /\/(\w+)\.(js|txt)$/.exec(urlParts[0])
-		if(textPathMatch)
-			return textPathMatch[1];
-		return undefined;
+		return textPathMatch ? textPathMatch[1] : undefined
 	},
 	//# use getAvailableRepositories to get lists of extensions
 	getAvailableExtensions: function() {
@@ -166,14 +165,12 @@ config.macros.extensionsExplorer = {
 				console.log('problems with parsing '+ centralSourcesListName +':', e);
 			}
 		}
-		if(!availableExtensions)
-			availableExtensions = this.availableExtensions;
+		if(!availableExtensions) availableExtensions = this.availableExtensions;
 
 		//# move name normalizing to the reading method
 		//  once we move the list of available extensions from hardcode
-		for(let extension of availableExtensions) {
-			extension.name = extension.name ||
-				this.guessNameByUrl(extension);
+		for(const extension of availableExtensions) {
+			extension.name = extension.name || this.guessNameByUrl(extension);
 		}
 		return availableExtensions
 	},
@@ -212,17 +209,17 @@ config.macros.extensionsExplorer = {
 			const requestUrl = url.split('#')[0];
 			const cache = this.twsCache;
 			const onTwLoad = function(success, params, responseText, url, xhr) {
-				if(!success)
-					return callback(null); //# pass more info? outside: warn?
+				if(!success) return callback(null); //# pass more info? outside: warn?
 				if(!useCache) cache[requestUrl] = responseText;
+
 				const externalTW = new TiddlyWiki();
-				let result = externalTW.importTiddlyWiki(responseText);
-				if(!result)
-					return callback(null); //# pass more info? outside: warn?
+				const result = externalTW.importTiddlyWiki(responseText);
+				if(!result) return callback(null); //# pass more info? outside: warn?
+
 				const tiddler = externalTW.fetchTiddler(tiddlerName);
 				tiddler.title = title;
 				callback(tiddler);
-				
+
 				// above is a simple "from scratch" implementation
 				//# should we reuse existing core code? (see import)
 				//  currently, this only loads and passes tiddler,
@@ -305,13 +302,13 @@ config.macros.extensionsExplorer = {
 	// grabs list of available extensions and shows with buttons to install;
 	// for each installed plugin, shows a button to check update or "no url" message,
 	refresh: function(table) {
-		let $tbody = jQuery(table).find('tbody')
+		const $tbody = jQuery(table).find('tbody')
 			.empty();
 
 		// safe method (no wikification, innerHTML etc)
 		const appendRow = function(cells) {
-			let row = document.createElement('tr');
-			let nameCell = createTiddlyElement(row, 'td');
+			const row = document.createElement('tr');
+			const nameCell = createTiddlyElement(row, 'td');
 			if(cells.url)
 				createExternalLink(nameCell, cells.url, cells.name);
 			else
@@ -321,10 +318,10 @@ config.macros.extensionsExplorer = {
 
 			createTiddlyElement(row, 'td', null, null, cells.version);
 
-			let actionsCell = createTiddlyElement(row, 'td');
-			for(let e of cells.actionElements)
+			const actionsCell = createTiddlyElement(row, 'td');
+			for(const e of cells.actionElements)
 				actionsCell.appendChild(e);
-			
+
 			$tbody.append(row);
 		}
 
@@ -363,11 +360,11 @@ config.macros.extensionsExplorer = {
 
 		// show installed ones.. # or only those having updates?
 		$tbody.append(jQuery(`<tr><td colspan="4" style="text-align: center;">Installed</td></tr>`));
-		for(let extensionTiddler of installedExtensionsTiddlers) {
+		for(const extensionTiddler of installedExtensionsTiddlers) {
 			//# limit the width of the Description column/whole table
-			let updateUrl = this.getSourceUrl(extensionTiddler);
+			const updateUrl = this.getSourceUrl(extensionTiddler);
 				//# check also list of extensions to install
-			let onUpdateCheckResponse = result => {
+			const onUpdateCheckResponse = result => {
 				if(!result.tiddler) {
 					displayMessage(this.lingo.updateNotAvailable);
 					//# use result.error
@@ -394,11 +391,13 @@ config.macros.extensionsExplorer = {
 					));
 				}
 			}
-			let checkUpdateButton = createTiddlyButton(null,
+
+			const checkUpdateButton = createTiddlyButton(null,
 				this.lingo.updateButtonCheckLabel,
 				this.lingo.updateButtonCheckPrompt,
 				() => this.checkForUpdate(updateUrl, extensionTiddler,
 							onUpdateCheckResponse))
+
 			appendRow({
 				name: extensionTiddler.title,
 				description: this.getDescription(extensionTiddler),
@@ -407,13 +406,13 @@ config.macros.extensionsExplorer = {
 					updateUrl ? checkUpdateButton :
 					document.createTextNode(this.lingo.noSourceUrlAvailable)
 				]
-			});
+			})
 		}
 	},
 	grabAndInstall: function(extension) {
 		if(!extension) return;
 		if(extension.text) {
-			let extensionTiddler = new Tiddler(extension.name);
+			const extensionTiddler = new Tiddler(extension.name);
 			extensionTiddler.text = extension.text;
 			extensionTiddler.generatedByTextOnly = true;
 			//# share 3 ↑ lines as ~internalize helper (with loadExternalTiddler)
