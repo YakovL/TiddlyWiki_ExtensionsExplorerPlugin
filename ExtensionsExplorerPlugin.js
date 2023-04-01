@@ -1,9 +1,9 @@
 /***
 |Description|checks and reports updates of installed extensions on startup, introduces a macro/backstage button to explore, install and update extensions|
-|Version|0.4.2|
-|Author|Yakov Litvin|
-|Source|https://github.com/YakovL/TiddlyWiki_ExtensionsExplorerPlugin/blob/master/ExtensionsExplorerPlugin.js|
-|License|[[MIT|https://github.com/YakovL/TiddlyWiki_ExtensionsExplorerPlugin/blob/master/LICENSE]]|
+|Version    |0.4.2|
+|Author     |Yakov Litvin|
+|Source     |https://github.com/YakovL/TiddlyWiki_ExtensionsExplorerPlugin/blob/master/ExtensionsExplorerPlugin.js|
+|License    |[[MIT|https://github.com/YakovL/TiddlyWiki_ExtensionsExplorerPlugin/blob/master/LICENSE]]|
 !!!Installation & configuration
 Installation of the plugin is as usual: import the tiddler or copy and tag it with {{{systemConfig}}}; reload TW.
 
