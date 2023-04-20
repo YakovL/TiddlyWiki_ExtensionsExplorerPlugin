@@ -1,6 +1,6 @@
 /***
 |Description|checks and reports updates of installed extensions on startup, introduces a macro/backstage button to explore, install and update extensions|
-|Version    |0.4.2|
+|Version    |0.4.3|
 |Author     |Yakov Litvin|
 |Source     |https://github.com/YakovL/TiddlyWiki_ExtensionsExplorerPlugin/blob/master/ExtensionsExplorerPlugin.js|
 |License    |[[MIT|https://github.com/YakovL/TiddlyWiki_ExtensionsExplorerPlugin/blob/master/LICENSE]]|
@@ -58,7 +58,7 @@ config.macros.extensionsExplorer = {
 		getImportedUpdateMsg: (title, versionString) => "Imported "+
 			(versionString ? title + " v" + versionString :
 			 "the updated "+ title),
-		
+
 		centralSourcesListAnnotation: 'The JSON here describes extensions so that ExtensionsExplorerPlugin can install them'
 	},
 	
@@ -137,8 +137,8 @@ config.macros.extensionsExplorer = {
 		if(!extension.url) return undefined
 		const urlParts = extension.url.split('#')
 
-		// site.domain/path/tw.html#TiddlerName
-		if(urlParts.length > 1 && /\.html$/.exec(urlParts[0])) return urlParts[1]
+		// site.domain/path/tw.html#TiddlerName  or  site.domain/path/#TiddlerName
+		if(urlParts.length > 1 && /(\.html|\/)$/.exec(urlParts[0])) return urlParts[1]
 
 		// <url part>/TiddlerName.txt or <url part>/TiddlerName.js
 		const textPathMatch = /\/(\w+)\.(js|txt)$/.exec(urlParts[0])
@@ -304,7 +304,7 @@ config.macros.extensionsExplorer = {
 	// for each installed plugin, shows a button to check update or "no url" message,
 	refresh: function(table) {
 		const $tbody = jQuery(table).find('tbody')
-			.empty();
+			.empty()
 
 		// safe method (no wikification, innerHTML etc)
 		const appendRow = function(cells) {
@@ -344,6 +344,7 @@ config.macros.extensionsExplorer = {
 
 			if(!extension.name && extension.sourceType == 'tw')
 				extension.name = extension.url.split('#')[1]
+
 			appendRow({
 				name:		extension.name,
 				url:		extension.url,
