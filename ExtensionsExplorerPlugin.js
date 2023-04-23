@@ -11,6 +11,19 @@ Installation of the plugin is as usual: import the tiddler or copy and tag it wi
 Once you installed the plugin, on startup it will try to check if there's any available updates to the installed extensions and report if it finds any. Updates are looked up where the Source slice points (with some TW savers/servers, this may fail if the extension author hasn't enabled CORS on the server pointed by Source); EEP will recognize an "update" if the Version slice has a higher version than that in the installed extension (like: 0.4.2 is higher than 0.3.9).
 
 It also adds "explore extensions" in the backstage (and the {{{<<extensionsExplorer>>}}} macro with the same interface) that shows some extensions available for installation and the list of installed plugins with buttons to check for updates.
+
+!!!For extension authors: how to prepare extensions and repositories
+To make EEP find updates for your extensions, you have to
+# put it somewhere in the internet:
+** the server should have CORS enabled (~GitHub is fine);
+** the extension should be in either form: "plain text" (.js or .txt file extension) or a tiddler in a TW (.html extension);
+# ensure that the extension has a Source slice with a url that points to itself (i.e. where to look for the latest version):
+** for plain text, one can use a direct url, like: https://raw.githubusercontent.com/YakovL/TiddlyWiki_ShowUnsavedPlugin/master/ShowUnsavedPlugin.js;
+** for ~GitHub, one can also use the url of the UI page (i.e. navigate to it via ~GitHub UI and copy the address): https://github.com/YakovL/TiddlyWiki_ShowUnsavedPlugin/blob/master/ShowUnsavedPlugin.js;
+** for a tiddler inside a TW, use a permalink, like: https://TiddlyTools.com/Classic/#NestedSlidersPlugin (note that the Source slice in this plugin is in fact outdated: http://www.TiddlyTools.com/#NestedSlidersPlugin – you should avoid that as this will break the updating flow);
+** for a tiddler inside a TW on ~GitHub, use ~GitHub Pages (this is in fact how ~TiddlyTools is served, they just use a custom domain; an example of an "ordinary" url: https://yakovl.github.io/TiddlyWiki_ExtraFilters/#ExtraFiltersPlugin);
+** for your dev flow, it may be useful to put the plugin to ~GitHub as a .js file and load it into the demo TW via [[TiddlerInFilePlugin|https://github.com/YakovL/TiddlyWiki_TiddlerInFilePlugin]]. An example of such setup can be found [[here|https://github.com/YakovL/TiddlyWiki_FromPlaceToPlacePlugin]].
+
 ***/
 //{{{
 // Returns the slice value if it is present or defaultText otherwise
