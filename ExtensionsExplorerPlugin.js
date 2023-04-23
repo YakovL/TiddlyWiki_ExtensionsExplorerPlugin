@@ -8,9 +8,11 @@
 Installation of the plugin is as usual: import the tiddler or copy and tag it with {{{systemConfig}}}; reload TW.
 
 !!!What EEP does, how to use it
-Once you installed the plugin, on startup it will try to check if there's any available updates to the installed extensions and report if it finds any. Updates are looked up where the Source slice points (with some TW savers/servers, this may fail if the extension author hasn't enabled CORS on the server pointed by Source); EEP will recognize an "update" if the Version slice has a higher version than that in the installed extension (like: 0.4.2 is higher than 0.3.9).
+Once you install this plugin, on startup, it will try to check if installed extensions have any updates available and report if it finds any. An update of a particular extension is looked up by the url in the Source slice (see this tiddler for example). EEP will recognize an "update" if it finds the content by that url, and that content has a Version slice and the version is higher than the installed one (like: 0.4.2 is higher than 0.3.9; 0.0.1 is also higher than none).
 
 It also adds "explore extensions" in the backstage (and the {{{<<extensionsExplorer>>}}} macro with the same interface) that shows some extensions available for installation and the list of installed plugins with buttons to check for updates.
+
+Note: With some TW savers/servers, loading an extension may fail if its author hasn't enabled CORS on the server pointed by Source.
 
 !!!For extension authors: how to prepare extensions and repositories
 To make EEP find updates for your extensions, you have to
