@@ -485,7 +485,8 @@ config.macros.extensionsExplorer = {
 		}
 		store.setDirty(true)
 		//# store url for updating if slice is not present?
-		//# notify? refresh? depends on extension type?
+		// make explorer and other stuff refresh
+		store.notify(extensionTiddler.title, true)
 		//# .oO reloading, hot reinstalling
 	},
 	guessSourceType: function(url) {
