@@ -50,6 +50,8 @@ config.macros.extensionsExplorer = {
 		getFailedToLoadMsg: name => "failed to load " + name,
 		getSucceededToLoadMsg: name => "loaded " + name + ", about to import and install...",
 		noSourceUrlAvailable: "no source url",
+		getImportUpdateMsg: (name, isUpdated) => name + " was " + (isUpdated ? "updated" :
+			isUpdated === false ? "imported" : "imported/updated"),
 
 		updateButtonCheckLabel: "check",
 		updateButtonCheckPrompt: "check for updates",
@@ -468,7 +470,7 @@ config.macros.extensionsExplorer = {
 		} else {
 			//# add _ tag for themes? 
 		}
-		
+
 		// actually import etc
 		this.updateExtension(extensionTiddler)
 		//# what if exists already? (by the same name; other name)
@@ -488,6 +490,7 @@ config.macros.extensionsExplorer = {
 		// make explorer and other stuff refresh
 		store.notify(extensionTiddler.title, true)
 		//# .oO reloading, hot reinstalling
+		displayMessage(this.lingo.getImportUpdateMsg(title))
 	},
 	guessSourceType: function(url) {
 		if(/\.(txt|js)$/.exec(url.split('#')[0])) return 'txt'
