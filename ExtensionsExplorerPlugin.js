@@ -87,8 +87,10 @@ config.macros.extensionsExplorer = {
 		)
 			return 'plugin'
 	},
-	//# should we use 'server.host' field instead? see core (import, loadMissingTiddler etc) for the exact semantics
-	sourceUrlField: 'sourceUrl',
+	// We use the server.host field a bit different than the core does (see importing):
+	// we keep #TiddlerName part which won't hurt except for the plugin https://github.com/TiddlyWiki/tiddlywiki/blob/master/plugins/Sync.js (which we kinda substitute anyway),
+	// we also don't set server.type and server.page.revision fields yet (unlike import); see also server.workspace, wikiformat fields.
+	sourceUrlField: 'server.host',
 	getSourceUrl: function(tiddler) {
 		return tiddler.fields[this.sourceUrlField] || tiddler.getSlice('Source')
 		//# try also the field set by import (figure the name by experiment)
