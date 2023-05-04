@@ -50,35 +50,35 @@ config.macros.extensionsExplorer = {
 		installButtonLabel: "install",
 		installButtonPrompt: "get and install this extension",
 		getFailedToLoadMsg: name => "failed to load " + name,
-		getSucceededToLoadMsg: name => "loaded " + name + ", about to import and install...",
+		getSucceededToLoadMsg: name => `loaded ${name}, about to import and install...`,
 		noSourceUrlAvailable: "no source url",
 		getImportUpdateMsg: (name, isUpdated) => name + " was " + (isUpdated ? "updated" :
 			isUpdated === false ? "imported" : "imported/updated"),
 
 		updateButtonCheckLabel: "check",
 		updateButtonCheckPrompt: "check for updates",
-		getUpdateAvailableMsg: name => "update of "+ name +" is available!",
+		getUpdateAvailableMsg: name => `update of ${name} is available!`,
 		getUpdateAvailableAndVersionsMsg: (existingTiddler, newTiddler) => {
 			const getVersionString = config.macros.extensionsExplorer.getVersionString
-			return "update of "+ existingTiddler.title +" is available "+
-				"(current version: "+ getVersionString(existingTiddler) +
-				", available version: "+ getVersionString(newTiddler)
+			return `update of ${existingTiddler.title} is available ` +
+				"(current version: " + getVersionString(existingTiddler) +
+				", available version: " + getVersionString(newTiddler) + ")"
 		},
 		updateNotAvailable: "update is not available",
 		getUpdateConfirmMsg: (title, loadedVersion, presentVersion) => {
-			const loadedVersionString = loadedVersion ? formatVersion(loadedVersion) : ''
-			const presentVersionString = presentVersion ? formatVersion(presentVersion) : ''
-			return "Would you like to update "+ title +
-				" (new version: "+ (loadedVersionString || "unknown") +
-			 	", current version: "+ (presentVersionString || "unknown") +")?"
+			const loadedVersionString = loadedVersion ? formatVersion(loadedVersion) : ""
+			const presentVersionString = presentVersion ? formatVersion(presentVersion) : ""
+			return `Would you like to update ${title}` +
+				` (new version: ${loadedVersionString || "unknown"}, ` +
+			 	`current version: ${presentVersionString || "unknown"})?`
 		},
-		getImportedUpdateMsg: (title, versionString) => "Imported "+
+		getImportedUpdateMsg: (title, versionString) => "Imported " +
 			(versionString ? title + " v" + versionString :
-			 "the updated "+ title),
+			 "the updated " + title),
 
-		centralSourcesListAnnotation: 'The JSON here describes extensions so that ExtensionsExplorerPlugin can install them'
+		centralSourcesListAnnotation: "The JSON here describes extensions so that ExtensionsExplorerPlugin can install them"
 	},
-	
+
 	// helpers specific to tiddler format
 	guessExtensionType: function(tiddler) {
 		if(tiddler.tags.contains('systemConfig') ||
@@ -179,7 +179,7 @@ config.macros.extensionsExplorer = {
 			if(match) try {
 				availableExtensions = JSON.parse(match[2])
 			} catch (e) {
-				console.log('problems with parsing '+ centralSourcesListName +':', e)
+				console.log(`problems with parsing ${centralSourcesListName}:`, e)
 			}
 		}
 		if(!availableExtensions) availableExtensions = this.availableExtensions
@@ -274,7 +274,7 @@ config.macros.extensionsExplorer = {
 		//# instead of returning tiddlers, create extension objects,
 		//  those should have ~isInstalled, ~isEnabled, ~hasUpdates flags
 		//  (and change refresh accordingly)
-		return store.filterTiddlers('[tag[systemConfig]] [['+ centralSourcesListName +']]')
+		return store.filterTiddlers(`[tag[systemConfig]] [[${centralSourcesListName}]]`)
 		//# implement others: themes, transclusions
 	},
 	// for each installed extension, check for update and reports (now: displays message)
@@ -299,7 +299,7 @@ config.macros.extensionsExplorer = {
 					//# start with creating summary
 				})
 			}
-		
+
 		const taskName = "explorePlugins"
 		config.backstageTasks.push(taskName)
 		config.tasks[taskName] = {
@@ -316,7 +316,7 @@ config.macros.extensionsExplorer = {
 
 		jQuery(table).attr({ refresh: 'macro', macroName: macroName })
 			.addClass('extensionsExplorer').append('<tbody>')
-		
+
 		this.refresh(table)
 	},
 	// grabs list of available extensions and shows with buttons to install;
@@ -348,11 +348,9 @@ config.macros.extensionsExplorer = {
 		//# when implemented: load list of available extensions (now hardcoded)
 
 		const installedExtensionsTiddlers = this.getInstalledExtensions()
-			.sort((e1, e2) => 
+			.sort((e1, e2) =>
 				!this.getSourceUrl(e1) ? +1 :
-				!this.getSourceUrl(e2) ? -1 :
-				0
-			)
+					!this.getSourceUrl(e2) ? -1 : 0)
 
 		// show extensions available to install # will it omit if installed?
 		const availableExtensions = this.getAvailableExtensions()
@@ -417,7 +415,7 @@ config.macros.extensionsExplorer = {
 				this.lingo.updateButtonCheckLabel,
 				this.lingo.updateButtonCheckPrompt,
 				() => this.checkForUpdate(updateUrl, extensionTiddler,
-							onUpdateCheckResponse))
+					onUpdateCheckResponse))
 
 			appendRow({
 				name: extensionTiddler.title,
@@ -527,7 +525,7 @@ config.macros.extensionsExplorer = {
 			if(compareVersions(this.getVersion(loadedTiddler),
 					   this.getVersion(extensionTiddler)
 					  ) >= 0)
-				//# also get and compare modified dates?
+			//# also get and compare modified dates?
 			{
 				//# what about undefined?
 				console.log('loaded is not newer')
