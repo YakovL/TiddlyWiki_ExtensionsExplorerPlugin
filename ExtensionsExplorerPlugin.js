@@ -405,7 +405,7 @@ config.macros.extensionsExplorer = {
 					extensionTiddler.title,
 					versionOfLoaded, versionOfPresent))
 				) {
-					this.updateExtension(result.tiddler)
+					this.updateExtension(result.tiddler, updateUrl)
 					displayMessage(this.lingo.getImportedUpdateMsg(
 						result.tiddler.title,
 						this.getVersionString(result.tiddler)
@@ -437,7 +437,7 @@ config.macros.extensionsExplorer = {
 			extensionTiddler.text = extension.text
 			extensionTiddler.generatedByTextOnly = true
 			//# share 3 ↑ lines as ~internalize helper (with loadExternalTiddler)
-			this.install(extensionTiddler, extension.type)
+			this.install(extensionTiddler, extension.type, extension.url)
 			return
 		}
 		this.loadExternalTiddler(
@@ -450,14 +450,14 @@ config.macros.extensionsExplorer = {
 				}
 				displayMessage(this.lingo.getSucceededToLoadMsg(tiddler.title))
 				this.install(tiddler, extension.type ||
-					this.guessExtensionType(tiddler))
+					this.guessExtensionType(tiddler), extension.url)
 			}
 		)
 	},
 	// evaluate if a plugin, import
 	//# simple unsafe version, no dependency handling, registering as installed,
 	//  _install-only-once check_, result reporting, refreshing/notifying, ..
-	install: function(extensionTiddler, extensionType) {
+	install: function(extensionTiddler, extensionType, sourceUrl) {
 		if(!extensionTiddler) return
 
 		if(extensionType == 'plugin') {
@@ -476,10 +476,10 @@ config.macros.extensionsExplorer = {
 		}
 
 		// actually import etc
-		this.updateExtension(extensionTiddler)
+		this.updateExtension(extensionTiddler, sourceUrl)
 		//# what if exists already? (by the same name; other name)
 	},
-	updateExtension: function(extensionTiddler) {
+	updateExtension: function(extensionTiddler, sourceUrl) {
 		// import
 		var existingTiddler = store.fetchTiddler(extensionTiddler.title)
 		if(extensionTiddler.generatedByTextOnly && existingTiddler) {
@@ -489,6 +489,10 @@ config.macros.extensionsExplorer = {
 		} else {
 			store.addTiddler(extensionTiddler)
 		}
+		if(sourceUrl && this.getSourceUrl(extensionTiddler) !== sourceUrl) {
+			this.setSourceUrl(extensionTiddler, sourceUrl)
+		}
+
 		store.setDirty(true)
 		//# store url for updating if slice is not present?
 		// make explorer and other stuff refresh
