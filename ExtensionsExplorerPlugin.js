@@ -121,7 +121,7 @@ config.macros.extensionsExplorer = {
 		return this.availableRepositories
 	},
 	// fallback used when AvailableExtensions is empty
-	availableExtensions: [
+	defaultAvailableExtensions: [
 		{
 			// js file @ github - worked /# simplify url to be inserted?
 			name: 'ShowUnsavedPlugin',
@@ -182,7 +182,7 @@ config.macros.extensionsExplorer = {
 				console.log(`problems with parsing ${centralSourcesListName}:`, e)
 			}
 		}
-		if(!availableExtensions) availableExtensions = this.availableExtensions
+		if(!availableExtensions) availableExtensions = this.defaultAvailableExtensions
 
 		//# move name normalizing to the reading method
 		//  once we move the list of available extensions from hardcode
@@ -540,7 +540,7 @@ config.macros.extensionsExplorer = {
 }
 
 config.shadowTiddlers[centralSourcesListName] = '//{{{\n' +
-	JSON.stringify(config.macros.extensionsExplorer.availableExtensions, null, 2) +
+	JSON.stringify(config.macros.extensionsExplorer.defaultAvailableExtensions, null, 2) +
 	'\n//}}}'
 config.annotations[centralSourcesListName] =
 	config.macros.extensionsExplorer.lingo.centralSourcesListAnnotation
