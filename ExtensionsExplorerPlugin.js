@@ -1,6 +1,6 @@
 /***
 |Description|checks and reports updates of installed extensions on startup, introduces a macro/backstage button to explore, install and update extensions|
-|Version    |0.4.3|
+|Version    |0.5.0|
 |Author     |Yakov Litvin|
 |Source     |https://github.com/YakovL/TiddlyWiki_ExtensionsExplorerPlugin/blob/master/ExtensionsExplorerPlugin.js|
 |License    |[[MIT|https://github.com/YakovL/TiddlyWiki_ExtensionsExplorerPlugin/blob/master/LICENSE]]|
@@ -191,9 +191,9 @@ config.macros.extensionsExplorer = {
 		}
 		return availableExtensions
 	},
-	availableUpdates: [], //# of extensions? extension tiddlers?
-	addAvailableUpdate: function(/*tiddler/title, loadedTiddler*/) {
-		//# this.availableUpdates.push(...)
+	availableUpdatesCache: {},
+	cacheAvailableUpdate: function(sourceUrl, tiddler) {
+		this.availableUpdatesCache[sourceUrl] = { tiddler: tiddler }
 	},
 	// github urls like https://github.com/tobibeer/TiddlyWikiPlugins/blob/master/plugins/FiltrPlugin.js
 	// are urls of user interface; to get raw code, we use the official githubusercontent.com service
@@ -288,8 +288,10 @@ config.macros.extensionsExplorer = {
 				this.checkForUpdate(url, eTiddler, result => {
 		console.log('checkForUpdate for ' + url +
 			',', eTiddler, 'result is:', result)
-					if(result.tiddler && !result.noUpdateMessage)
+					if(result.tiddler && !result.noUpdateMessage) {
+						this.cacheAvailableUpdate(url, result.tiddler)
 						displayMessage(this.lingo.getUpdateAvailableAndVersionsMsg(eTiddler, result.tiddler))
+					}
 					//# either report each one at once,
 					//   (see onUpdateCheckResponse)
 					//  create summary and report,
@@ -348,11 +350,17 @@ config.macros.extensionsExplorer = {
 		//# when implemented: load list of available extensions (now hardcoded)
 
 		const installedExtensionsTiddlers = this.getInstalledExtensions()
-			.sort((e1, e2) =>
-				!this.getSourceUrl(e1) ? +1 :
-					!this.getSourceUrl(e2) ? -1 : 0)
+			.sort((e1, e2) => {
+				const up1 = this.availableUpdatesCache[this.getSourceUrl(e1)]
+				const up2 = this.availableUpdatesCache[this.getSourceUrl(e2)]
+				return	up1 && up2 ? 0 :
+					up1 && !up2 ? -1 :
+					up2 && !up1 ? +1 :
+					!this.getSourceUrl(e1) ? +1 :
+					!this.getSourceUrl(e2) ? -1 : 0
+			})
 
-		// show extensions available to install # will it omit if installed?
+		// show extensions available to install
 		const availableExtensions = this.getAvailableExtensions()
 		for(const extension of availableExtensions) {
 			// skip installed
@@ -417,13 +425,20 @@ config.macros.extensionsExplorer = {
 				() => this.checkForUpdate(updateUrl, extensionTiddler,
 					onUpdateCheckResponse))
 
+			const cachedUpdate = this.availableUpdatesCache[updateUrl]
+			const installUpdateButton = createTiddlyButton(null,
+				this.lingo.updateButtonUpdateLabel,
+				this.lingo.updateButtonUpdatePrompt,
+				() => onUpdateCheckResponse(cachedUpdate))
+
 			appendRow({
 				name: extensionTiddler.title,
 				description: this.getDescription(extensionTiddler),
 				version: this.getVersionString(extensionTiddler),
 				actionElements: [
-					updateUrl ? checkUpdateButton :
-					document.createTextNode(this.lingo.noSourceUrlAvailable)
+					!updateUrl ? document.createTextNode(this.lingo.noSourceUrlAvailable) :
+					cachedUpdate ? installUpdateButton :
+					checkUpdateButton
 				]
 			})
 		}
@@ -441,7 +456,8 @@ config.macros.extensionsExplorer = {
 		this.loadExternalTiddler(
 			extension.sourceType,
 			extension.url,
-			extension.name, tiddler => {
+			extension.name,
+			tiddler => {
 				if(!tiddler) {
 					displayMessage(this.lingo.getFailedToLoadMsg(extension.name))
 					return
