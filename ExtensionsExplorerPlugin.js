@@ -1,6 +1,6 @@
 /***
 |Description|checks and reports updates of installed extensions on startup, introduces a macro/backstage button to explore, install and update extensions|
-|Version    |0.5.0|
+|Version    |0.6.0|
 |Author     |Yakov Litvin|
 |Source     |https://github.com/YakovL/TiddlyWiki_ExtensionsExplorerPlugin/blob/master/ExtensionsExplorerPlugin.js|
 |License    |[[MIT|https://github.com/YakovL/TiddlyWiki_ExtensionsExplorerPlugin/blob/master/LICENSE]]|
@@ -163,6 +163,7 @@ config.macros.extensionsExplorer = {
 		const textPathMatch = /\/(\w+)\.(js|txt)$/.exec(urlParts[0])
 		return textPathMatch ? textPathMatch[1] : undefined
 	},
+	collectionTag: 'systemExtensionsCollection',
 	parseCollection: function(text) {
 		/* expected format:
 
@@ -185,6 +186,15 @@ config.macros.extensionsExplorer = {
 		const listText = store.getTiddlerText(centralSourcesListName)
 		const availableExtensions = this.parseCollection(listText)
 			|| this.defaultAvailableExtensions
+
+		const otherCollections = store.filterTiddlers("[tag[" + this.collectionTag + "]]")
+		for(const collectionTiddler of otherCollections) {
+			const extensions = this.parseCollection(collectionTiddler.text)
+			// for now, just merge
+			if(extensions) for(const extension of extensions) {
+				availableExtensions.push(extension)
+			}
+		}
 
 		//# move name normalizing to the reading method
 		//  once we move the list of available extensions from hardcode
@@ -488,6 +498,10 @@ config.macros.extensionsExplorer = {
 				}
 				// plugin-specific import preparation
 				extensionTiddler.tags.pushUnique('systemConfig')
+			break;
+
+			case 'collection':
+				extensionTiddler.tags.pushUnique(this.collectionTag)
 			break;
 
 			//# add _ tag for themes?
