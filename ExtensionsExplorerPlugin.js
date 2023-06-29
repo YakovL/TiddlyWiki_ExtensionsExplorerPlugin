@@ -163,26 +163,28 @@ config.macros.extensionsExplorer = {
 		const textPathMatch = /\/(\w+)\.(js|txt)$/.exec(urlParts[0])
 		return textPathMatch ? textPathMatch[1] : undefined
 	},
+	parseCollection: function(text) {
+		/* expected format:
+
+		< additional info, like |Source|...| and other metadata >
+		//{{{
+		< extensions as JSON >
+		//}}}
+
+		*/
+		const match = /(\/\/{{{)\s+((?:.|\n)+)\s+(\/\/}}})$/.exec(text)
+		if(match) try {
+			return JSON.parse(match[2])
+		} catch (e) {
+			console.log(`problems with parsing ${centralSourcesListName}:`, e)
+			return null
+		}
+	},
 	//# use getAvailableRepositories to get lists of extensions
 	getAvailableExtensions: function() {
 		const listText = store.getTiddlerText(centralSourcesListName)
-		let availableExtensions
-		if(listText) {
-			/*
-			expected format:
-			... (here we can have some slices like |Source||)
-			//{{{
-			[ ... ]
-			//}}}
-			*/
-			const match = /(\/\/{{{)\s+((?:.|\n)+)\s+(\/\/}}})$/.exec(listText)
-			if(match) try {
-				availableExtensions = JSON.parse(match[2])
-			} catch (e) {
-				console.log(`problems with parsing ${centralSourcesListName}:`, e)
-			}
-		}
-		if(!availableExtensions) availableExtensions = this.defaultAvailableExtensions
+		const availableExtensions = this.parseCollection(listText)
+			|| this.defaultAvailableExtensions
 
 		//# move name normalizing to the reading method
 		//  once we move the list of available extensions from hardcode
