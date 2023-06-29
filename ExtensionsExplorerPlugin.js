@@ -476,19 +476,21 @@ config.macros.extensionsExplorer = {
 	install: function(extensionTiddler, extensionType, sourceUrl) {
 		if(!extensionTiddler) return
 
-		if(extensionType == 'plugin') {
-			// enable at once
-			try {
-				eval(extensionTiddler.text)
-				//# displayMessage ..installed
-			} catch(e) {
-				//# displayMessage ..failed to install
-				//  don't import?
-			}
-			// plugin-specific import preparation
-			extensionTiddler.tags.pushUnique('systemConfig')
-		} else {
-			//# add _ tag for themes? 
+		switch(extensionType) {
+			case 'plugin':
+				// enable at once
+				try {
+					eval(extensionTiddler.text)
+					//# displayMessage ..installed
+				} catch(e) {
+					//# displayMessage ..failed to install
+					//  don't import?
+				}
+				// plugin-specific import preparation
+				extensionTiddler.tags.pushUnique('systemConfig')
+			break;
+
+			//# add _ tag for themes?
 		}
 
 		// actually import etc
