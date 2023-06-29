@@ -286,7 +286,8 @@ config.macros.extensionsExplorer = {
 		//# instead of returning tiddlers, create extension objects,
 		//  those should have ~isInstalled, ~isEnabled, ~hasUpdates flags
 		//  (and change refresh accordingly)
-		return store.filterTiddlers(`[tag[systemConfig]] [[${centralSourcesListName}]]`)
+		return store.filterTiddlers(`[tag[systemConfig]] ` +
+			`[tag[${this.collectionTag}]] [[${centralSourcesListName}]]`)
 		//# implement others: themes, transclusions
 	},
 	// for each installed extension, check for update and reports (now: displays message)
