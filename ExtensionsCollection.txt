@@ -5,6 +5,7 @@ Current status is "under construction", meaning that there's a lot of collection
 //{{{
 [
   {
+    "name": "YLExtensionsCollection",
     "url": "https://github.com/YakovL/TiddlyWiki_YL_ExtensionsIndex/blob/master/index.txt",
     "type": "collection"
   }
