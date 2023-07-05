@@ -304,7 +304,6 @@ config.macros.extensionsExplorer = {
 		console.log('checkForUpdate for ' + url +
 			',', eTiddler, 'result is:', result)
 					if(result.tiddler && !result.noUpdateMessage) {
-						this.cacheAvailableUpdate(url, result.tiddler)
 						displayMessage(this.lingo.getUpdateAvailableAndVersionsMsg(eTiddler, result.tiddler))
 					}
 					//# either report each one at once,
@@ -571,8 +570,10 @@ config.macros.extensionsExplorer = {
 					tiddler: loadedTiddler,
 					noUpdateMessage: "current version is up-to-date"
 				})
-			} else
+			} else {
+				this.cacheAvailableUpdate(url, loadedTiddler)
 				callback({ tiddler: loadedTiddler })
+			}
 		})
 	}
 }
