@@ -1,6 +1,6 @@
 /***
 |Description|checks and reports updates of installed extensions on startup, introduces a macro/backstage button to explore, install and update extensions|
-|Version    |0.6.0|
+|Version    |0.6.1|
 |Author     |Yakov Litvin|
 |Source     |https://github.com/YakovL/TiddlyWiki_ExtensionsExplorerPlugin/blob/master/ExtensionsExplorerPlugin.js|
 |License    |[[MIT|https://github.com/YakovL/TiddlyWiki_ExtensionsExplorerPlugin/blob/master/LICENSE]]|
@@ -528,6 +528,7 @@ config.macros.extensionsExplorer = {
 			this.setSourceUrl(extensionTiddler, sourceUrl)
 		}
 
+		delete this.availableUpdatesCache[sourceUrl]
 		store.setDirty(true)
 		//# store url for updating if slice is not present?
 		// make explorer and other stuff refresh
