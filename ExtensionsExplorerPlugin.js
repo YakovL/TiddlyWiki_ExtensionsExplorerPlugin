@@ -52,6 +52,8 @@ config.macros.extensionsExplorer = {
 		getFailedToLoadMsg: name => "failed to load " + name,
 		getSucceededToLoadMsg: name => `loaded ${name}, about to import and install...`,
 		noSourceUrlAvailable: "no source url",
+		getEvalSuccessMsg: name => `Successfully installed ${name} (reload is not necessary)`,
+		getEvalFailMsg: (name, error) => `${name} failed with error: ${error}`,
 		getImportUpdateMsg: (name, isUpdated) => name + " was " + (isUpdated ? "updated" :
 			isUpdated === false ? "imported" : "imported/updated"),
 
@@ -488,17 +490,18 @@ config.macros.extensionsExplorer = {
 	install: function(extensionTiddler, extensionType, sourceUrl) {
 		if(!extensionTiddler) return
 
+		const { text, title } = extensionTiddler
 		switch(extensionType) {
 			case 'plugin':
 				// enable at once
 				try {
-					eval(extensionTiddler.text)
-					//# displayMessage ..installed
+					eval(text)
+					displayMessage(this.lingo.getEvalSuccessMsg(title))
 				} catch(e) {
-					//# displayMessage ..failed to install
-					//  don't import?
+					displayMessage(this.lingo.getEvalFailMsg(title, e))
+					//# don't import? only on confirm?
 				}
-				// plugin-specific import preparation
+				// import preparation
 				extensionTiddler.tags.pushUnique('systemConfig')
 			break;
 
