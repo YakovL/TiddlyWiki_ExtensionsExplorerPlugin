@@ -407,7 +407,7 @@ config.macros.extensionsExplorer = {
 			//# limit the width of the Description column/whole table
 			const updateUrl = this.getSourceUrl(extensionTiddler)
 				//# check also list of extensions to install
-			const onUpdateCheckResponse = result => {
+			const onUpdateCheckResponse = (result, isAlreadyReported) => {
 				if(!result.tiddler) {
 					displayMessage(this.lingo.updateNotAvailable)
 					//# use result.error
@@ -420,7 +420,7 @@ config.macros.extensionsExplorer = {
 					//# use result.error
 					return
 				}
-				displayMessage(this.lingo.getUpdateAvailableMsg(extensionTiddler.title), updateUrl)
+				if(!isAlreadyReported) displayMessage(this.lingo.getUpdateAvailableMsg(extensionTiddler.title), updateUrl)
 
 				//# later: better than confirm? option for silent?
 				if(confirm(this.lingo.getUpdateConfirmMsg(
@@ -445,7 +445,7 @@ config.macros.extensionsExplorer = {
 			const installUpdateButton = createTiddlyButton(null,
 				this.lingo.updateButtonUpdateLabel,
 				this.lingo.updateButtonUpdatePrompt,
-				() => onUpdateCheckResponse(cachedUpdate))
+				() => onUpdateCheckResponse(cachedUpdate, true))
 
 			appendRow({
 				name: extensionTiddler.title,
