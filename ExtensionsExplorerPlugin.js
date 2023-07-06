@@ -536,7 +536,7 @@ config.macros.extensionsExplorer = {
 		// make explorer and other stuff refresh
 		store.notify(extensionTiddler.title, true)
 		//# .oO reloading, hot reinstalling
-		displayMessage(this.lingo.getImportUpdateMsg(title))
+		displayMessage(this.lingo.getImportUpdateMsg(extensionTiddler.title))
 	},
 	guessSourceType: function(url) {
 		if(/\.(txt|js)$/.exec(url.split('#')[0])) return 'txt'
