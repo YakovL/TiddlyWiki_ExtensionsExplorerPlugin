@@ -54,8 +54,9 @@ config.macros.extensionsExplorer = {
 		noSourceUrlAvailable: "no source url",
 		getEvalSuccessMsg: name => `Successfully installed ${name} (reload is not necessary)`,
 		getEvalFailMsg: (name, error) => `${name} failed with error: ${error}`,
-		getImportUpdateMsg: (name, isUpdated) => name + " was " + (isUpdated ? "updated" :
-			isUpdated === false ? "imported" : "imported/updated"),
+		getImportSuccessMsg: (title, versionString, isUpdated) => isUpdated ?
+			`Updated ${title}${versionString ? " to " + versionString : ""}` :
+			`Imported ${title}${versionString ? " v" + versionString : ""}`,
 
 		updateButtonCheckLabel: "check",
 		updateButtonCheckPrompt: "check for updates",
@@ -76,9 +77,6 @@ config.macros.extensionsExplorer = {
 				` (new version: ${loadedVersionString || "unknown"}, ` +
 			 	`current version: ${presentVersionString || "unknown"})?`
 		},
-		getImportedUpdateMsg: (title, versionString) => "Imported " +
-			(versionString ? title + " v" + versionString :
-			 "the updated " + title),
 
 		centralSourcesListAnnotation: "The JSON here describes extensions so that ExtensionsExplorerPlugin can install them"
 	},
@@ -428,10 +426,6 @@ config.macros.extensionsExplorer = {
 					versionOfLoaded, versionOfPresent))
 				) {
 					this.updateExtension(result.tiddler, updateUrl)
-					displayMessage(this.lingo.getImportedUpdateMsg(
-						result.tiddler.title,
-						this.getVersionString(result.tiddler)
-					))
 				}
 			}
 
@@ -536,7 +530,8 @@ config.macros.extensionsExplorer = {
 		// make explorer and other stuff refresh
 		store.notify(extensionTiddler.title, true)
 		//# .oO reloading, hot reinstalling
-		displayMessage(this.lingo.getImportUpdateMsg(extensionTiddler.title))
+		displayMessage(this.lingo.getImportSuccessMsg(extensionTiddler.title,
+			this.getVersionString(extensionTiddler), !!existingTiddler))
 	},
 	guessSourceType: function(url) {
 		if(/\.(txt|js)$/.exec(url.split('#')[0])) return 'txt'
