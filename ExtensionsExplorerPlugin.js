@@ -1,6 +1,6 @@
 /***
 |Description|checks and reports updates of installed extensions on startup, introduces a macro/backstage button to explore, install and update extensions|
-|Version    |0.6.1|
+|Version    |0.6.2|
 |Author     |Yakov Litvin|
 |Source     |https://github.com/YakovL/TiddlyWiki_ExtensionsExplorerPlugin/blob/master/ExtensionsExplorerPlugin.js|
 |License    |[[MIT|https://github.com/YakovL/TiddlyWiki_ExtensionsExplorerPlugin/blob/master/LICENSE]]|
@@ -124,6 +124,11 @@ config.macros.extensionsExplorer = {
 	},
 	// fallback used when AvailableExtensions is empty
 	defaultAvailableExtensions: [
+		{
+			url: 'https://github.com/YakovL/TiddlyWiki_ExtensionsExplorerPlugin/blob/master/ExtensionsCollection.txt',
+			description: 'A central extensions collection for ExtensionsExplorerPlugin meant to both gather collections of existing extensions and help new authors make their work more explorable',
+			type: 'collection'
+		},
 		{
 			// js file @ github - worked /# simplify url to be inserted?
 			name: 'ShowUnsavedPlugin',
