@@ -61,7 +61,7 @@ config.macros.extensionsExplorer = {
 		updateButtonCheckLabel: "check",
 		updateButtonCheckPrompt: "check for updates",
 		updateButtonUpdateLabel: "update",
-		updateButtonUpdatePrompt: "install avaialble update",
+		updateButtonUpdatePrompt: "install available update",
 		getUpdateAvailableMsg: name => `update of ${name} is available!`,
 		getUpdateAvailableAndVersionsMsg: (existingTiddler, newTiddler) => {
 			const getVersionString = config.macros.extensionsExplorer.getVersionString
