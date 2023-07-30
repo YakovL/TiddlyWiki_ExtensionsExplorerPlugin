@@ -152,7 +152,7 @@ config.macros.extensionsExplorer = {
 		},
 		{
 			// txt file @ remote without CORS – worked with _
-			url: 'http://yakovl.bplaced.net/TW/Spreadsheets.html#HandsontablePlugin',
+			url: 'http://yakovlitvin.pro/TW/Spreadsheets.html#HandsontablePlugin',
 			description: 'a test plugin on a site without CORS'
 		},
 		{
