@@ -10,6 +10,11 @@ Current status is "under construction", meaning that there's a lot of collection
     "type": "collection"
   },
   {
+    "url": "https://github.com/YakovL/TiddlyWiki_Extensions/blob/master/TranslationsCollection.txt",
+    "description": "TiddlyWiki Translations",
+    "type": "collection"
+  },
+  {
     "url": "https://github.com/YakovL/TiddlyWiki_Extensions/blob/master/FND/SimpleSearchPlugin.js",
     "description": "Displays search results as a simple list of matching tiddlers"
   }
