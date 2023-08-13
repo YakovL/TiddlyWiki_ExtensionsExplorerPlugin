@@ -1,6 +1,6 @@
 /***
 |Description|checks and reports updates of installed extensions on startup, introduces a macro/backstage button to explore, install and update extensions|
-|Version    |0.6.2|
+|Version    |0.6.3|
 |Author     |Yakov Litvin|
 |Source     |https://github.com/YakovL/TiddlyWiki_ExtensionsExplorerPlugin/blob/master/ExtensionsExplorerPlugin.js|
 |License    |[[MIT|https://github.com/YakovL/TiddlyWiki_YL_ExtensionsCollection/blob/master/Common%20License%20(MIT)]]|
@@ -359,9 +359,10 @@ config.macros.extensionsExplorer = {
 
 			createTiddlyElement(row, 'td', null, null, cells.version)
 
-			const actionsCell = createTiddlyElement(row, 'td')
+			const actionsCell = createTiddlyElement(row, 'td', null, 'actionsCell')
+			const actionsWrapper = createTiddlyElement(actionsCell, 'div', null, 'actionsWrapper')
 			for(const e of cells.actionElements)
-				actionsCell.appendChild(e)
+				actionsWrapper.appendChild(e)
 
 			$tbody.append(row)
 		}
@@ -586,4 +587,21 @@ config.shadowTiddlers[centralSourcesListName] = '//{{{\n' +
 	'\n//}}}'
 config.annotations[centralSourcesListName] =
 	config.macros.extensionsExplorer.lingo.centralSourcesListAnnotation
+
+// Add styles
+const css = `
+.actionsCell .button {
+	padding: 0.2em;
+	display: inline-block;
+}
+td.actionsCell {
+	padding: 0;
+}`
+
+const shadowName = 'ExtensionsExplorerStyles'
+if(!config.shadowTiddlers[shadowName]) {
+	config.shadowTiddlers[shadowName] = css
+	store.addNotification(shadowName, refreshStyles)
+	store.addNotification("ColorPalette", function(_, doc) { refreshStyles(shadowName, doc) })
+}
 //}}}
