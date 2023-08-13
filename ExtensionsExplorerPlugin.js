@@ -452,7 +452,7 @@ config.macros.extensionsExplorer = {
 				description: this.getDescription(extensionTiddler),
 				version: this.getVersionString(extensionTiddler),
 				actionElements: [
-					!updateUrl ? document.createTextNode(this.lingo.noSourceUrlAvailable) :
+					!updateUrl ? createTiddlyElement(null, 'div', null, 'actionsLabel', this.lingo.noSourceUrlAvailable) :
 					cachedUpdate ? installUpdateButton :
 					checkUpdateButton
 				]
@@ -590,9 +590,10 @@ config.annotations[centralSourcesListName] =
 
 // Add styles
 const css = `
-.actionsCell .button {
+.actionsLabel, .actionsCell .button {
 	padding: 0.2em;
 	display: inline-block;
+	white-space: normal;
 }
 td.actionsCell {
 	padding: 0;
