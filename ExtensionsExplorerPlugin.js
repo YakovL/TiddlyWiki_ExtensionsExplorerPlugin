@@ -375,6 +375,7 @@ config.macros.extensionsExplorer = {
 							const li = createTiddlyElement(popup, 'li')
 							li.appendChild(e)
 						}
+						popup.style.minWidth = actionsWrapper.offsetWidth + 'px'
 						Popup.show()
 						event.stopPropagation()
 						return false
