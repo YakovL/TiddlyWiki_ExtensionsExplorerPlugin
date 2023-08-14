@@ -362,8 +362,10 @@ config.macros.extensionsExplorer = {
 
 			const actionsCell = createTiddlyElement(row, 'td', null, 'actionsCell')
 			const actionsWrapper = createTiddlyElement(actionsCell, 'div', null, 'actionsWrapper')
-			if(cells.actionElements.length > 0)
+			if(cells.actionElements.length > 0) {
 				actionsWrapper.appendChild(cells.actionElements[0])
+				actionsWrapper.firstChild.classList.add('mainButton')
+			}
 			if(cells.actionElements.length > 1) {
 				const { lingo } = config.macros.extensionsExplorer
 				const otherActionEls = cells.actionElements.slice(1)
@@ -621,6 +623,9 @@ td.actionsCell {
 
 .actionsWrapper {
 	white-space: nowrap;
+}
+.button.mainButton {
+	padding-left: 0.7em;
 }`
 
 const shadowName = 'ExtensionsExplorerStyles'
