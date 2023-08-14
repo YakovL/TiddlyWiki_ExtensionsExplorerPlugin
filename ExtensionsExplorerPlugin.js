@@ -49,6 +49,7 @@ config.macros.extensionsExplorer = {
 	lingo: {
 		installButtonLabel: "install",
 		installButtonPrompt: "get and install this extension",
+		otherActionsPrompt: "show other actions",
 		getFailedToLoadMsg: name => "failed to load " + name,
 		getSucceededToLoadMsg: name => `loaded ${name}, about to import and install...`,
 		noSourceUrlAvailable: "no source url",
@@ -361,8 +362,25 @@ config.macros.extensionsExplorer = {
 
 			const actionsCell = createTiddlyElement(row, 'td', null, 'actionsCell')
 			const actionsWrapper = createTiddlyElement(actionsCell, 'div', null, 'actionsWrapper')
-			for(const e of cells.actionElements)
-				actionsWrapper.appendChild(e)
+			if(cells.actionElements.length > 0)
+				actionsWrapper.appendChild(cells.actionElements[0])
+			if(cells.actionElements.length > 1) {
+				const { lingo } = config.macros.extensionsExplorer
+				const otherActionEls = cells.actionElements.slice(1)
+				createTiddlyButton(actionsWrapper, '▾',
+					lingo.otherActionsPrompt,
+					function(event) {
+						const popup = Popup.create(actionsWrapper)
+						for(const e of otherActionEls) {
+							const li = createTiddlyElement(popup, 'li')
+							li.appendChild(e)
+						}
+						Popup.show()
+						event.stopPropagation()
+						return false
+					},
+					'button otherActionsButton')
+			}
 
 			$tbody.append(row)
 		}
@@ -593,10 +611,15 @@ const css = `
 .actionsLabel, .actionsCell .button {
 	padding: 0.2em;
 	display: inline-block;
+	border: none;
 	white-space: normal;
 }
 td.actionsCell {
 	padding: 0;
+}
+
+.actionsWrapper {
+	white-space: nowrap;
 }`
 
 const shadowName = 'ExtensionsExplorerStyles'
