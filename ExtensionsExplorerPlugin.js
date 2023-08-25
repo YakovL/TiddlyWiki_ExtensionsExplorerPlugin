@@ -1,6 +1,6 @@
 /***
 |Description|checks and reports updates of installed extensions on startup, introduces a macro/backstage button to explore, install and update extensions|
-|Version    |0.6.3|
+|Version    |0.6.4|
 |Author     |Yakov Litvin|
 |Source     |https://github.com/YakovL/TiddlyWiki_ExtensionsExplorerPlugin/blob/master/ExtensionsExplorerPlugin.js|
 |License    |[[MIT|https://github.com/YakovL/TiddlyWiki_YL_ExtensionsCollection/blob/master/Common%20License%20(MIT)]]|
@@ -47,6 +47,8 @@ const centralSourcesListName = "AvailableExtensions"
 
 config.macros.extensionsExplorer = {
 	lingo: {
+		backstageButtonLabel: "explore extensions",
+		backstageButtonTooltip: "See if there are any updates or install new ones",
 		installButtonLabel: "install",
 		installButtonPrompt: "get and install this extension",
 		otherActionsPrompt: "show other actions",
@@ -325,8 +327,8 @@ config.macros.extensionsExplorer = {
 		const taskName = "explorePlugins"
 		config.backstageTasks.push(taskName)
 		config.tasks[taskName] = {
-			text: "explore extensions",
-			tooltip: "see if there's any updates or install new ones",
+			text: this.lingo.backstageButtonLabel,
+			tooltip: this.lingo.backstageButtonTooltip,
 			content: '<<extensionsExplorer>>',
 		}
 	},
