@@ -1,0 +1,13 @@
+|Source     |https://github.com/YakovL/TiddlyWiki_ExtensionsExplorerPlugin/blob/master/SingleIndex.txt|
+|Description|A collection of (not yet) all available extensions|
+|Version    |0.0.1|
+This is a temporal solution to simplify listing all the available extensions by not introducing collections per repository or category.
+It will also help with testing search and other aspects of dealing with //many// extensions.
+//{{{
+[
+    {
+        "url": "http://tiddlywiki.abego-software.de/#YourSearchPlugin",
+        "description": "Search your TiddlyWiki with advanced search features such as result lists, tiddler preview, result ranking, search filters, combined searches and many more"
+    }
+]
+//}}}
