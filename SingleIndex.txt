@@ -1,10 +1,18 @@
 |Source     |https://github.com/YakovL/TiddlyWiki_ExtensionsExplorerPlugin/blob/master/SingleIndex.txt|
 |Description|A collection of (not yet) all available extensions|
-|Version    |0.0.2|
+|Version    |0.0.4|
 This is a temporal solution to simplify listing all the available extensions by not introducing collections per repository or category.
 It will also help with testing search and other aspects of dealing with //many// extensions.
 //{{{
 [
+    {
+        "url": "http://tiddlywiki.abego-software.de/#DataTiddlerPlugin",
+        "description": "Enhance your tiddlers with structured data in JSON format, access and modify them via JS (including ForEachTiddlerPlugin)"
+    },
+    {
+        "url": "http://tiddlywiki.abego-software.de/#FormTiddlerPlugin",
+        "description": "Use form-based tiddlers to enter your tiddler data using text fields, listboxes, checkboxes etc."
+    },
     {
         "url": "http://tiddlywiki.abego-software.de/#IntelliTaggerPlugin",
         "description": "Speed up tagging tiddlers using tag autocompletion and correction, tag suggestions and context sensitive tag guessing, "Edit Tags only" mode and many more. Especially when you are working with a lot of tags this is the plugin you are looking for."
