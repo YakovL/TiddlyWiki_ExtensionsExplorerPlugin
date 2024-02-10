@@ -17,6 +17,10 @@ Current status is "under construction", meaning that there's a lot of collection
   {
     "url": "https://github.com/YakovL/TiddlyWiki_Extensions/blob/master/FND/SimpleSearchPlugin.js",
     "description": "Displays search results as a simple list of matching tiddlers"
+  },
+  {
+    "url": "https://github.com/PengjuYan/TiddlyWiki_SwitchPalettePlugin/blob/master/SwitchPalettePlugin.js",
+    "description": "Switches among your color palettes"
   }
 ]
 //}}}
