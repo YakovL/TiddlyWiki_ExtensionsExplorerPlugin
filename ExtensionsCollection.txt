@@ -1,6 +1,6 @@
 |Source     |https://github.com/YakovL/TiddlyWiki_ExtensionsExplorerPlugin/blob/master/ExtensionsCollection.txt|
 |Description|This is a central collection for ExtensionsExplorerPlugin. It is meant to gather collections of existing extensions, and also to help new authors make their work more explorable.|
-|Version    |0.1.0|
+|Version    |0.1.1|
 Current status is "under construction", meaning that there's a lot of collections and extensions to add. Other things should be considered as well, like quality guidelines, handling forks, etc. Instructions for authors will be published in a separate readme and linked here.
 //{{{
 [
