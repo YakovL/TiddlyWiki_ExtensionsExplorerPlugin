@@ -1,6 +1,6 @@
 /***
 |Description|checks and reports updates of installed extensions on startup, introduces a macro/backstage button to explore, install and update extensions|
-|Version    |0.6.4|
+|Version    |0.6.5|
 |Author     |Yakov Litvin|
 |Source     |https://github.com/YakovL/TiddlyWiki_ExtensionsExplorerPlugin/blob/master/ExtensionsExplorerPlugin.js|
 |License    |[[MIT|https://github.com/YakovL/TiddlyWiki_YL_ExtensionsCollection/blob/master/Common%20License%20(MIT)]]|
@@ -183,7 +183,7 @@ config.macros.extensionsExplorer = {
 		//}}}
 
 		*/
-		const match = /(\/\/{{{)\s+((?:.|\n)+)\s+(\/\/}}})$/.exec(text)
+		const match = /(\/\/{{{)\s+((?:.|\n)+)\s+(\/\/}}})\s*$/.exec(text)
 		if(match) try {
 			return JSON.parse(match[2])
 		} catch (e) {
