@@ -170,7 +170,7 @@ config.macros.extensionsExplorer = {
 		if(urlParts.length > 1 && /(\.html|\/)$/.exec(urlParts[0])) return urlParts[1]
 
 		// <url part>/TiddlerName.txt or <url part>/TiddlerName.js
-		const textPathMatch = /\/(\w+)\.(js|txt)$/.exec(urlParts[0])
+		const textPathMatch = /\/([^\/]+)\.(js|txt)$/.exec(urlParts[0])
 		return textPathMatch ? textPathMatch[1] : undefined
 	},
 	collectionTag: 'systemExtensionsCollection',
