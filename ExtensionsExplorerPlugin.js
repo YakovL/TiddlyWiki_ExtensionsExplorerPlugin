@@ -185,7 +185,11 @@ config.macros.extensionsExplorer = {
 		*/
 		const match = /(\/\/{{{)\s+((?:.|\n)+)\s+(\/\/}}})\s*$/.exec(text)
 		if(match) try {
-			return JSON.parse(match[2])
+			const list = JSON.parse(match[2])
+			return list.map(extension => ({
+				name: extension.name || this.guessNameByUrl(extension),
+				...extension
+			}))
 		} catch (e) {
 			console.log(`problems with parsing ${centralSourcesListName}:`, e)
 			return null
@@ -206,11 +210,6 @@ config.macros.extensionsExplorer = {
 			}
 		}
 
-		//# move name normalizing to the reading method
-		//  once we move the list of available extensions from hardcode
-		for(const extension of availableExtensions) {
-			extension.name = extension.name || this.guessNameByUrl(extension)
-		}
 		return availableExtensions
 	},
 	availableUpdatesCache: {},
