@@ -195,7 +195,7 @@ config.macros.extensionsExplorer = {
 			return null
 		}
 	},
-	//# use getAvailableRepositories to get lists of extensions
+	// reads .centralSourcesListName, .defaultAvailableExtensions, collections
 	getAvailableExtensions: function() {
 		const listText = store.getTiddlerText(centralSourcesListName)
 		const availableExtensions = this.parseCollection(listText)
