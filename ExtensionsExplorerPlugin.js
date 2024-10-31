@@ -284,7 +284,8 @@ config.macros.extensionsExplorer = {
 				if(!success) return callback(null)
 
 				const tiddler = new Tiddler(title)
-				tiddler.text = responseText
+				// remove \r originating from Windows
+				tiddler.text = responseText.replace(/\r\n/g, '\n')
 				tiddler.generatedByTextOnly = true
 				callback(tiddler)
 			})
