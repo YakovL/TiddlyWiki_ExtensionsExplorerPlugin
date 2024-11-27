@@ -333,6 +333,10 @@ config.macros.extensionsExplorer = {
 		}
 	},
 	handler: function(place, macroName, params, wikifier, paramString) {
+		// parse param "[type:installed|available]"
+		const pParams = paramString.parseParams("type", null, true, false, true)
+		const type = getParam(pParams, "type", "")
+
 		const tableHeaderMarkup = "|name|description|version||h"
 		// name is supposted to be a link to the repo; 3d row – for "install" button
 		wikify(tableHeaderMarkup, place)
@@ -340,6 +344,7 @@ config.macros.extensionsExplorer = {
 
 		jQuery(table).attr({ refresh: 'macro', macroName: macroName })
 			.addClass('extensionsExplorer').append('<tbody>')
+			.attr({ 'data-eep-type': type })
 
 		this.refresh(table)
 	},
@@ -348,6 +353,7 @@ config.macros.extensionsExplorer = {
 	refresh: function(table) {
 		const $tbody = jQuery(table).find('tbody')
 			.empty()
+		const type = jQuery(table).attr('data-eep-type')
 
 		// safe method (no wikification, innerHTML etc)
 		const appendRow = function(cells) {
@@ -404,82 +410,91 @@ config.macros.extensionsExplorer = {
 			})
 
 		// show extensions available to install
-		const availableExtensions = this.getAvailableExtensions()
-		for(const extension of availableExtensions) {
-			// skip installed
-			if(installedExtensionsTiddlers.some(tid => tid.title === extension.name
-				&& this.getSourceUrl(tid) === extension.url)) continue
+		if(!type || type == 'available') {
+			const availableExtensions = this.getAvailableExtensions()
 
-			if(!extension.name && extension.sourceType == 'tw')
-				extension.name = extension.url.split('#')[1]
+			for(const extension of availableExtensions) {
+				// skip installed
+				if(installedExtensionsTiddlers.some(tid =>
+					tid.title === extension.name
+					&& this.getSourceUrl(tid) === extension.url)
+				) continue
 
-			appendRow({
-				name:		extension.name,
-				url:		extension.url,
-				description:	extension.description,
-				version:	extension.version,
-				actionElements: [
-					createTiddlyButton(null,
-						this.lingo.installButtonLabel,
-						this.lingo.installButtonPrompt,
-						() => this.grabAndInstall(extension) )
-				]
-			})
+				if(!extension.name && extension.sourceType == 'tw')
+					extension.name = extension.url.split('#')[1]
+
+				appendRow({
+					name:        extension.name,
+					url:         extension.url,
+					description: extension.description,
+					version:     extension.version,
+					actionElements: [
+						createTiddlyButton(null,
+							this.lingo.installButtonLabel,
+							this.lingo.installButtonPrompt,
+							() => this.grabAndInstall(extension) )
+					]
+				})
+			}
 		}
 		//# add link to open, update on the place of install – if installed
 
 		// show installed ones.. # or only those having updates?
-		$tbody.append(jQuery(`<tr><td colspan="4" style="text-align: center;">Installed</td></tr>`))
-		for(const extensionTiddler of installedExtensionsTiddlers) {
-			//# limit the width of the Description column/whole table
-			const updateUrl = this.getSourceUrl(extensionTiddler)
-				//# check also list of extensions to install
-			const onUpdateCheckResponse = (result, isAlreadyReported) => {
-				if(!result.tiddler) {
-					displayMessage(this.lingo.updateNotAvailable)
-					//# use result.error
-					return
-				}
-				const versionOfLoaded = this.getVersion(result.tiddler)
-				const versionOfPresent = this.getVersion(extensionTiddler)
-				if(compareVersions(versionOfLoaded, versionOfPresent) >= 0) {
-					displayMessage(this.lingo.updateNotAvailable)
-					//# use result.error
-					return
-				}
-				if(!isAlreadyReported) displayMessage(this.lingo.getUpdateAvailableMsg(extensionTiddler.title), updateUrl)
+		if(!type) $tbody.append(jQuery(
+			`<tr><td colspan="4" style="text-align: center;">Installed</td></tr>`))
+		if(!type || type == 'installed') {
+			for(const extensionTiddler of installedExtensionsTiddlers) {
+				//# limit the width of the table|Description column
+				const updateUrl = this.getSourceUrl(extensionTiddler)
+					//# check also list of extensions to install
+				const onUpdateCheckResponse = (result, isAlreadyReported) => {
+					if(!result.tiddler) {
+						displayMessage(this.lingo.updateNotAvailable)
+						//# use result.error
+						return
+					}
+					const versionOfLoaded = this.getVersion(result.tiddler)
+					const versionOfPresent = this.getVersion(extensionTiddler)
 
-				//# later: better than confirm? option for silent?
-				if(confirm(this.lingo.getUpdateConfirmMsg(
-					extensionTiddler.title,
-					versionOfLoaded, versionOfPresent))
-				) {
-					this.updateExtension(result.tiddler, updateUrl)
+					if(compareVersions(versionOfLoaded, versionOfPresent) >= 0) {
+						displayMessage(this.lingo.updateNotAvailable)
+						//# use result.error
+						return
+					}
+					if(!isAlreadyReported) displayMessage(this.lingo.getUpdateAvailableMsg(extensionTiddler.title), updateUrl)
+
+					//# later: better than confirm? option for silent?
+					if(confirm(this.lingo.getUpdateConfirmMsg(
+						extensionTiddler.title,
+						versionOfLoaded, versionOfPresent))
+					) {
+						this.updateExtension(result.tiddler, updateUrl)
+					}
 				}
+
+				const checkUpdateButton = createTiddlyButton(null,
+					this.lingo.updateButtonCheckLabel,
+					this.lingo.updateButtonCheckPrompt,
+					() => this.checkForUpdate(updateUrl, extensionTiddler,
+						onUpdateCheckResponse))
+
+				const cachedUpdate = this.availableUpdatesCache[updateUrl]
+				const installUpdateButton = createTiddlyButton(null,
+					this.lingo.updateButtonUpdateLabel,
+					this.lingo.updateButtonUpdatePrompt,
+					() => onUpdateCheckResponse(cachedUpdate, true))
+
+				appendRow({
+					name: extensionTiddler.title,
+					description: this.getDescription(extensionTiddler),
+					version: this.getVersionString(extensionTiddler),
+					actionElements: [
+						!updateUrl ? createTiddlyElement(null, 'div', null, 'actionsLabel', this.lingo.noSourceUrlAvailable) :
+						cachedUpdate ? installUpdateButton :
+						checkUpdateButton
+					]
+				})
 			}
-
-			const checkUpdateButton = createTiddlyButton(null,
-				this.lingo.updateButtonCheckLabel,
-				this.lingo.updateButtonCheckPrompt,
-				() => this.checkForUpdate(updateUrl, extensionTiddler,
-					onUpdateCheckResponse))
-
-			const cachedUpdate = this.availableUpdatesCache[updateUrl]
-			const installUpdateButton = createTiddlyButton(null,
-				this.lingo.updateButtonUpdateLabel,
-				this.lingo.updateButtonUpdatePrompt,
-				() => onUpdateCheckResponse(cachedUpdate, true))
-
-			appendRow({
-				name: extensionTiddler.title,
-				description: this.getDescription(extensionTiddler),
-				version: this.getVersionString(extensionTiddler),
-				actionElements: [
-					!updateUrl ? createTiddlyElement(null, 'div', null, 'actionsLabel', this.lingo.noSourceUrlAvailable) :
-					cachedUpdate ? installUpdateButton :
-					checkUpdateButton
-				]
-			})
 		}
 	},
 	grabAndInstall: function(extension) {
