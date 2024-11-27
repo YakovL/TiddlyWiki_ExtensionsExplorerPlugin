@@ -329,7 +329,7 @@ config.macros.extensionsExplorer = {
 		config.tasks[taskName] = {
 			text: this.lingo.backstageButtonLabel,
 			tooltip: this.lingo.backstageButtonTooltip,
-			content: '<<extensionsExplorer>>',
+			content: '<<tiddler ExtensionsInBackstage>>',
 		}
 	},
 	handler: function(place, macroName, params, wikifier, paramString) {
@@ -619,6 +619,8 @@ config.macros.extensionsExplorer = {
 		})
 	}
 }
+
+config.shadowTiddlers.ExtensionsInBackstage = '<<extensionsExplorer>>'
 
 config.shadowTiddlers[centralSourcesListName] = '//{{{\n' +
 	JSON.stringify(config.macros.extensionsExplorer.defaultAvailableExtensions, null, 2) +
