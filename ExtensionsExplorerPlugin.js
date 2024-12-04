@@ -1,6 +1,6 @@
 /***
 |Description|checks and reports updates of installed extensions on startup, introduces a macro/backstage button to explore, install and update extensions|
-|Version    |0.6.5|
+|Version    |0.7.0|
 |Author     |Yakov Litvin|
 |Source     |https://github.com/YakovL/TiddlyWiki_ExtensionsExplorerPlugin/blob/master/ExtensionsExplorerPlugin.js|
 |License    |[[MIT|https://github.com/YakovL/TiddlyWiki_YL_ExtensionsCollection/blob/master/Common%20License%20(MIT)]]|
@@ -620,7 +620,29 @@ config.macros.extensionsExplorer = {
 	}
 }
 
-config.shadowTiddlers.ExtensionsInBackstage = '<<extensionsExplorer>>'
+config.shadowTiddlers.ExtensionsInBackstage = `<<tabs txtTabExtensionsExplorer
+	"check and update" "" ExtensionsExplorer
+	"explore and install" "" ExtensionsOutThere
+	contribute "" ContributeToExtensionsEcosystem
+>>`
+
+config.shadowTiddlers.ExtensionsExplorer = `<<extensionsExplorer type:installed>>`
+
+config.shadowTiddlers.ExtensionsOutThere = `<<extensionsExplorer type:available>>
+
+Some repositories not yet indexed by EEP that may be worth checking:
+|[[TiddlyTools|https://tiddlytools.com/Classic]]|The largest extensions repository created mostly by a single developer, Eric Shulman. Source slice is currently outdated in all the extensions, be sure to change it to the up-to-date urls|
+||..more repositories will be added, check the "contribute" tab for more|
+
+Old indexes of existing extensions (EEP is meant to eventually substitute them):
+|[[Customize|https://yakovlitvin.pro/TW/TS_backups/customize.tiddlyspace.com%20(24.02.2016).html]]|archive of the big index created by Tobias Beer and contributors|`
+
+config.shadowTiddlers.ContributeToExtensionsEcosystem = `Indexing estensions and repositories for EEP is work in progress. You can suggest changes in [[Github|https://github.com/YakovL/TiddlyWiki_ExtensionsExplorerPlugin]] (via issues or ~PRs) or in the [[Google Group|https://groups.google.com/g/tiddlywikiclassic]].
+
+Things that we encourage you to do include:
+* Reporting missing repos for the "explore and install" tab (repositories not yet indexed by EEP);
+* Creating collections and indexing existing extensions (either yours or created by others);
+* Asking questions about contributing and making it as simple as possible for others.`
 
 config.shadowTiddlers[centralSourcesListName] = '//{{{\n' +
 	JSON.stringify(config.macros.extensionsExplorer.defaultAvailableExtensions, null, 2) +
