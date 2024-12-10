@@ -640,9 +640,9 @@ Old indexes of existing extensions (EEP is meant to eventually substitute them):
 config.shadowTiddlers.ContributeToExtensionsEcosystem = `Indexing estensions and repositories for EEP is work in progress. You can suggest changes in [[Github|https://github.com/YakovL/TiddlyWiki_ExtensionsExplorerPlugin]] (via issues or ~PRs) or in the [[Google Group|https://groups.google.com/g/tiddlywikiclassic]].
 
 Things that we encourage you to do include:
-* Reporting missing repos for the "explore and install" tab (repositories not yet indexed by EEP);
-* Creating collections and indexing existing extensions (either yours or created by others);
-* Asking questions about contributing and making it as simple as possible for others.`
+✦ Reporting missing repos for the "explore and install" tab (repositories not yet indexed by EEP);
+✦ Creating collections and indexing existing extensions (either yours or created by others);
+✦ Asking questions about contributing and making it as simple as possible for others.`
 
 config.shadowTiddlers[centralSourcesListName] = '//{{{\n' +
 	JSON.stringify(config.macros.extensionsExplorer.defaultAvailableExtensions, null, 2) +
