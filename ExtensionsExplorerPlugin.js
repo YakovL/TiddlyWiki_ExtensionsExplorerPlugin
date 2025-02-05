@@ -133,6 +133,10 @@ config.macros.extensionsExplorer = {
 			type: 'collection'
 		},
 		{
+			url: 'https://github.com/YakovL/TiddlyWiki_SimplifiedUpgradingPlugin/blob/master/SimplifiedUpgradingPlugin.js',
+			description: 'Get core upgrading work with savers with I/O limitations, like Timimi, Tiddloid, or MTS 1.7.0 and above; optionally get notified on start if an upgrade is available; have upgrading more git-friendly'
+		},
+		{
 			// js file @ github - worked /# simplify url to be inserted?
 			name: 'ShowUnsavedPlugin',
 			sourceType: 'txt',
