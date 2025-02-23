@@ -636,7 +636,6 @@ config.shadowTiddlers.ExtensionsOutThere = `<<extensionsExplorer type:available>
 
 Some repositories not yet indexed by EEP that may be worth checking:
 |[[TiddlyTools|https://tiddlytools.com/Classic]]|The largest extensions repository created mostly by a single developer, Eric Shulman. Source slice is currently outdated in all the extensions, be sure to change it to the up-to-date urls|
-|[[abegoExtensions|https://yakovl.github.io/TiddlyWiki_abego/original/]]|Includes groundshaping plugins like ~ForEachTiddlerPlugin and ~YourSearchPlugin|
 |[[MPTW|https://mptw.tiddlyspot.com]]|Introduces various extensions like ~RenameTagsPlugin or ~HideWhenPlugin, and ~TagglyTagging/MPTW as overall "approaches"|
 ||..more repositories will be added, check the "contribute" tab for more|
 
