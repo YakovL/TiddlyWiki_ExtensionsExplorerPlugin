@@ -31,6 +31,11 @@ Current status is "under construction", meaning that there's a lot of collection
   {
     "url": "https://github.com/PengjuYan/TiddlyWiki_SwitchPalettePlugin/blob/master/SwitchPalettePlugin.js",
     "description": "Switches among your color palettes"
-  }
+  },
+  {
+		"URL": "https://github.com/wangyenshu/TiddlyWikiClassicPluginsArchives/blob/main/TiddlyWikiClassicPluginsArchives.txt",
+		"description": "Tiddlywiki Classic Plugins Archives, compatible with https://github.com/YakovL/TiddlyWiki_ExtensionsExplorerPlugin.",
+		"type": "collection"
+	}
 ]
 //}}}
